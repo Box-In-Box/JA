@@ -6,58 +6,59 @@ using UnityEngine;
 using UnityEngine.UI;
 using Gongju.Web;
 using Sirenix.OdinInspector;
+using System.Security.Policy;
 
 public class QuizView : MonoBehaviour
 {
     [SerializeField] private QuizPopup quizPopup;
-    [field : SerializeField] public RectTransform quizPopupRect { get; private set; }
-    [field : SerializeField] public Image quizPopupImage { get; private set; }
+    [field : SerializeField] public RectTransform QuizPopupRect { get; private set; }
+    [field : SerializeField] public Image QuizPopupImage { get; private set; }
 
     [field : Title("[ Question Panel ]")]
-    [field : SerializeField] public TMP_Text  questionText { get; private set; }
-    [field : SerializeField] public RectTransform quistionPagePanel { get; private set; }
-    [field : SerializeField] public TMP_Text quistionPageText { get; private set; }
-    [field : SerializeField] public Button previousPageButton { get; private set; }
-    [field : SerializeField] public Button nextPageButton { get; private set; }
-    [field : SerializeField] public RectTransform imgaePanelRect { get; private set; }
+    [field : SerializeField] public TMP_Text QuestionText { get; private set; }
+    [field : SerializeField] public RectTransform QuistionPagePanel { get; private set; }
+    [field : SerializeField] public TMP_Text QuistionPageText { get; private set; }
+    [field : SerializeField] public Button PreviousPageButton { get; private set; }
+    [field : SerializeField] public Button NextPageButton { get; private set; }
+    [field : SerializeField] public RectTransform ImgaePanelRect { get; private set; }
 
     [field : Title("[ Hint ]")]
-    [field : SerializeField] public Toggle hintToggle { get; private set; }
-    [field : SerializeField] public RectTransform hintPosition { get; private set; }
-    [field : SerializeField] public RectTransform hintPosition_Image { get; private set; } 
+    [field : SerializeField] public Button HintButton { get; private set; }
+    [field : SerializeField] public RectTransform HintPosition { get; private set; }
+    [field : SerializeField] public RectTransform HintPosition_Image { get; private set; } 
 
     [field : Title("[ Answer Panel ]")]
-    [field : SerializeField] public QuizAnswer[] answerView { get; private set; }
-    [field : SerializeField] public Button answerCheckButton { get; private set; }
+    [field : SerializeField] public QuizAnswer[] AnswerView { get; private set; }
+    [field : SerializeField] public Button AnswerCheckButton { get; private set; }
 
     [field : Title("[ Reward Panel ]")]
-    [field : SerializeField] public RectTransform rewardPanel { get; private set; }
+    [field : SerializeField] public RectTransform RewardPanel { get; private set; }
 
     [field : Title("[ Setting ]")]
-    [field : SerializeField] private float hintheightOffset = 60f;
+    [SerializeField] private float hintheightOffset = 60f;
 
     private void Awake()
     {
-        previousPageButton.onClick.AddListener(() => PreviousQuestionPage());
-        nextPageButton.onClick.AddListener(() => NextQuestionPage());
-        answerCheckButton.onClick.AddListener(() => quizPopup.AnswerCheck());
+        PreviousPageButton.onClick.AddListener(() => PreviousQuestionPage());
+        NextPageButton.onClick.AddListener(() => NextQuestionPage());
+        AnswerCheckButton.onClick.AddListener(() => quizPopup.AnswerCheck());
     }
     
     [Button]
     public void UseImageSetting()
     {
-        imgaePanelRect.gameObject.SetActive(true);
-        quizPopupImage.SetNativeSize();
-        hintToggle.GetComponent<RectTransform>().anchoredPosition = hintPosition_Image.anchoredPosition;
+        ImgaePanelRect.gameObject.SetActive(true);
+        QuizPopupImage.SetNativeSize();
+        HintButton.GetComponent<RectTransform>().anchoredPosition = HintPosition_Image.anchoredPosition;
     }
 
     [Button]
     public void NotUseImageSetting()
     {
-        imgaePanelRect.gameObject.SetActive(false);
-        quizPopupImage.SetNativeSize();
-        quizPopupRect.sizeDelta = new Vector2(quizPopupRect.rect.width, quizPopupRect.rect.height - imgaePanelRect.rect.height + hintheightOffset) ;
-        hintToggle.GetComponent<RectTransform>().anchoredPosition = hintPosition.anchoredPosition;
+        ImgaePanelRect.gameObject.SetActive(false);
+        QuizPopupImage.SetNativeSize();
+        QuizPopupRect.sizeDelta = new Vector2(QuizPopupRect.rect.width, QuizPopupRect.rect.height - ImgaePanelRect.rect.height + hintheightOffset) ;
+        HintButton.GetComponent<RectTransform>().anchoredPosition = HintPosition.anchoredPosition;
     }
 
     public void ViewSetting(QuizData quiz)
@@ -66,7 +67,7 @@ public class QuizView : MonoBehaviour
         QuestionTextSetting(quiz.question);
 
         // 보기 (랜덤 적용)
-        int count = answerView.Count();
+        int count = AnswerView.Count();
         List<int> list = Enumerable.Range(0, count).ToList();
         List<int> randList = new List<int>();
     
@@ -79,17 +80,19 @@ public class QuizView : MonoBehaviour
         for (int i = 0; i < count; ++i) {
             int num = i;
             int randNum = randList[i];
-            answerView[i].numberText.text = (i + 1).ToString();
-            answerView[i].SetAnswer(quiz.answers[randNum].answer_text, quiz.answer_correct);
-            answerView[i].button.onClick.AddListener(() => OnSelectedAnswer(answerView[num]));
-            answerView[i].SetSelected(false);
+            AnswerView[i].NumberText.text = (i + 1).ToString();
+            AnswerView[i].SetAnswer(quiz.answers[randNum].answer_text, quiz.answer_correct);
+            AnswerView[i].Button.onClick.AddListener(() => OnSelectedAnswer(AnswerView[num]));
+            AnswerView[i].SetSelected(false);
         }
+
+        HintButton.onClick.AddListener(() => Application.OpenURL(quiz.hint));
     }
 
 #region Question
     private void QuestionTextSetting(string questionString)
     {
-        questionText.text = questionString;
+        QuestionText.text = questionString;
 
         StartCoroutine(GetTextPagesCoroutine());
     }
@@ -97,7 +100,7 @@ public class QuizView : MonoBehaviour
     // 텍스트 레이아웃 강제 업데이트
     IEnumerator GetTextPagesCoroutine()
     {
-        questionText.ForceMeshUpdate();
+        QuestionText.ForceMeshUpdate();
 
         yield return null;
 
@@ -106,39 +109,44 @@ public class QuizView : MonoBehaviour
 
     private void PreviousQuestionPage()
     {
-        if (questionText.pageToDisplay > 1) {
-            questionText.pageToDisplay--;
+        if (QuestionText.pageToDisplay > 1) {
+            QuestionText.pageToDisplay--;
             PageView();
         }
     }
 
     private void NextQuestionPage()
     {
-        if (questionText.pageToDisplay < questionText.textInfo.pageCount) {
-            questionText.pageToDisplay++;
+        if (QuestionText.pageToDisplay < QuestionText.textInfo.pageCount) {
+            QuestionText.pageToDisplay++;
             PageView();
         }
     }
 
     private void PageView()
     {
-        previousPageButton.interactable = questionText.pageToDisplay == 1 ? false : true;
-        nextPageButton.interactable = questionText.pageToDisplay == questionText.textInfo.pageCount ? false : true;
-        quistionPageText.text = questionText.pageToDisplay.ToString() + '/' + questionText.textInfo.pageCount.ToString();
+        PreviousPageButton.interactable = QuestionText.pageToDisplay == 1 ? false : true;
+        NextPageButton.interactable = QuestionText.pageToDisplay == QuestionText.textInfo.pageCount ? false : true;
+        QuistionPageText.text = QuestionText.pageToDisplay.ToString() + '/' + QuestionText.textInfo.pageCount.ToString();
+
+        if (QuestionText.textInfo.pageCount <= 1)
+        {
+            QuistionPagePanel.gameObject.SetActive(false);
+        }
     }
 #endregion
 
 #region Answer
     private void OnSelectedAnswer(QuizAnswer quizAnswer)
     {
-        foreach (QuizAnswer answer in answerView) {
+        foreach (QuizAnswer answer in AnswerView) {
             if (quizAnswer == answer) {
-                if (quizPopup.selectedAnswer == answer) {
-                    quizPopup.selectedAnswer = null;
+                if (quizPopup.SelectedAnswer == answer) {
+                    quizPopup.SelectedAnswer = null;
                     answer.SetSelected(false);
                 }
                 else {
-                    quizPopup.selectedAnswer = answer;
+                    quizPopup.SelectedAnswer = answer;
                     answer.SetSelected(true);
                 }
             }

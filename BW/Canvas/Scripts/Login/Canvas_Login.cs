@@ -16,7 +16,7 @@ public class Canvas_Login : Canvas_Control, ICanvasView
             return _instance;
         }
     }
-    [field : SerializeField] public View_Login view { get; set; }
+    [field : SerializeField] public View_Login View { get; set; }
 
     public override void Awake()
     {
@@ -25,6 +25,6 @@ public class Canvas_Login : Canvas_Control, ICanvasView
 
     public View_Control GetView_Control()
     {
-        return view;
+        return View;
     }
 }

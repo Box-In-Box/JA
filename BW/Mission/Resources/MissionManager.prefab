@@ -148,9 +148,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missionManager: {fileID: 9189965576685448813}
-  <missionSignSubject>k__BackingField: {fileID: 5250857566679693881}
-  <missionCourseLine>k__BackingField: {fileID: 0}
-  <currentCourceMission>k__BackingField:
+  <MissionSignSubject>k__BackingField: {fileID: 5250857566679693881}
+  <MissionGateway>k__BackingField: {fileID: 0}
+  <MissionCourseLine>k__BackingField: {fileID: 0}
+  <CurrentCourceMission>k__BackingField:
     mission_id: 0
     mission_type: 
     mission_title: 
@@ -217,6 +218,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionManager: {fileID: 9189965576685448813}
   <treasureConversion>k__BackingField: {fileID: 3177190692004715319}
+  <treasureDatas>k__BackingField: []
+  <treasures>k__BackingField: []
 --- !u!114 &3177190692004715319
 MonoBehaviour:
   m_ObjectHideFlags: 0

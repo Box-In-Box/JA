@@ -1912,7 +1912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fcc535ba01c7040a2519cb8f0cbbe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <view>k__BackingField: {fileID: 8385413679050718974}
+  <View>k__BackingField: {fileID: 8385413679050718974}
 --- !u!114 &8385413679050718974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1940,6 +1940,7 @@ MonoBehaviour:
   idInput: {fileID: 1362183520441413682}
   passwordInput: {fileID: 5966756326390528618}
   loginButton: {fileID: 8798970154001585291}
+  guestButton: {fileID: 4280024202839252712}
 --- !u!223 &8791245931058538777
 Canvas:
   m_ObjectHideFlags: 0
@@ -1978,7 +1979,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

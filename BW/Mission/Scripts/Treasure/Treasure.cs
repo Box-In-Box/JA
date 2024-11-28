@@ -27,7 +27,10 @@ public class Treasure : MonoBehaviour
         }
         else
         {
-            MissionManager.instance.treasureMissionManager.treasures.Add(this);
+            if (!MissionManager.instance.treasureMissionManager.treasures.Contains(this))
+            {
+                MissionManager.instance.treasureMissionManager.treasures.Add(this);
+            }
             yield return new WaitUntil(() => MissionManager.instance.isMissionInit);
 
             var data = MissionManager.instance.treasureMissionManager.treasureDatas.Find(x => x.treasureTitle == this.treasureTitle);
@@ -35,6 +38,18 @@ public class Treasure : MonoBehaviour
             {
                 Setting(data.missionId, data.value);
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (MissionManager.instance && MissionManager.instance.treasureMissionManager)
+        {
+            if (MissionManager.instance.treasureMissionManager.treasures.Contains(this))
+            {
+                MissionManager.instance.treasureMissionManager.treasures.Remove(this);
+            }
+
         }
     }
 

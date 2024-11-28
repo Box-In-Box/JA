@@ -55,7 +55,7 @@ public class Editor_PlaySceneCreator : EditorWindow
                 count_current = ++count_ETC;
                 sceneGroup = "6";
             }
-            sw.WriteLine($"\t[MenuItem(\"Editor/PlayScene/{sceneNameList[i]}\", false, {sceneGroup + count_current})]");
+            sw.WriteLine($"\t[MenuItem(\"Editor/PlayScene/{sceneNameList[i]}\", false, {sceneGroup + count_current.ToString("D2")})]");
             sw.WriteLine($"\tstatic void Scene_Play_{i}() => ScenePlay({i});");
             sw.WriteLine();
         }

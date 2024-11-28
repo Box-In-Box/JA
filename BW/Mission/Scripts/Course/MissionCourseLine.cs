@@ -4,23 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[System.Serializable]
-public class MissionCourse
-{
-    [field : SerializeField] public int missionId { get; set; }
-    [field : SerializeField] public Transform courseParent { get; set; }
-    [field : SerializeField] public List<Transform> coursePositions { get; set; }
-}
-
 public class MissionCourseLine : MonoBehaviour
 {
-    [field : SerializeField] public List<MissionCourse> missionCourseList { get; set; } = new List<MissionCourse>();
-    [field : SerializeField, ReadOnly] public LineRenderer currentCourceLine { get; set; }
+    [System.Serializable]
+    public class CourseLine
+    {
+        public int missionId;
+        public Transform courseParent;
+        public List<Transform> coursePositions;
+    }
+
+    [SerializeField] private List<CourseLine> missionCourses = new List<CourseLine>();
+    [SerializeField, ReadOnly] private LineRenderer currentCourceLine;
     [SerializeField] private float intervalDistance  = 1f;
 
     private void Awake()
     {
-        foreach (MissionCourse course in missionCourseList) {
+        foreach (CourseLine course in missionCourses) {
             course.coursePositions = new List<Transform>();
 
             foreach (Transform point in course.courseParent) {
@@ -31,15 +31,17 @@ public class MissionCourseLine : MonoBehaviour
 
     private void OnEnable()
     {
-        if (MissionManager.instance) {
-            MissionManager.instance.courseMissionManager.missionCourseLine = this;
+        if (MissionManager.instance)
+        {
+            MissionManager.instance.courseMissionManager.MissionCourseLine = this;
         }
     }
 
     private void OnDisable()
     {
-        if (MissionManager.instance) {
-            MissionManager.instance.courseMissionManager.missionCourseLine = null;
+        if (MissionManager.instance)
+        {
+            MissionManager.instance.courseMissionManager.MissionCourseLine = null;
         }
     }
 
@@ -66,7 +68,7 @@ public class MissionCourseLine : MonoBehaviour
         if (routesType == "completed" || routesType == "finished" || progressData.missionProgress < 0) return;
 
         // Get Mission
-        var missionCourse = missionCourseList.Find(x => x.missionId == missionId);
+        var missionCourse = missionCourses.Find(x => x.missionId == missionId);
 
         // Null => Return 
         if (missionCourse == null) return;
@@ -78,7 +80,7 @@ public class MissionCourseLine : MonoBehaviour
         SetLineRenderer(interpolatedPositions);
     }
 
-    private List<Vector3> InterpolatedPosition(MissionCourse missionCourse)
+    private List<Vector3> InterpolatedPosition(CourseLine missionCourse)
     {
         List<Vector3> interpolatedPositions = new List<Vector3>();
 

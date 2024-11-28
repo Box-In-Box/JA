@@ -55,7 +55,7 @@ public class Editor_OpenSceneCreator : EditorWindow
                 count_current = ++count_ETC;
                 sceneGroup = "6";
             }
-            sw.WriteLine($"\t[MenuItem(\"Editor/OpenScene/{sceneNameList[i]}\", false, {sceneGroup + count_current})]");
+            sw.WriteLine($"\t[MenuItem(\"Editor/OpenScene/{sceneNameList[i]}\", false, {sceneGroup + count_current.ToString("D2")})]");
             sw.WriteLine($"\tstatic void Scene_{i}() => SceneOpen({i});");
             sw.WriteLine();
         }

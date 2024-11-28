@@ -38,19 +38,8 @@ public enum PlayerAnimationIndex
 
     // Action (10000 ~ 19999)
     selfCamera = PlayerAnimationTypeIndex.Action,
-    sitChair,
-    standChair,
-    talkStand,
-    hober,
-    fishing,        
-    boat,
-    car,
-    boat_fishing,
-
-    sit_talk,
-    sit_clap,
-    self_camera,
-    empty,
+    sit,
+    stand,
     fly = PlayerAnimationTypeIndex.Action + 9999,
 
     // Motion (20000 ~ 29999)

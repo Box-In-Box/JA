@@ -309,17 +309,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d9536b90b987842930f7ada99eddad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <rect>k__BackingField: {fileID: 7378092237941822061}
-  <button>k__BackingField: {fileID: 1255375552888963902}
-  <backgroundDeco>k__BackingField: {fileID: 7810645809682061365}
-  <backgroundImageRect>k__BackingField: {fileID: 7378092237941822061}
-  <backgroundImage>k__BackingField: {fileID: 5006314118741009588}
-  <signBackgroundSprite>k__BackingField:
-    normal: {fileID: 21300000, guid: 59f2794dd6358ce4391de3c12c7f330a, type: 3}
-    title: {fileID: 21300000, guid: dd14e71a597bdae4db7e12440cd6d6ae, type: 3}
-  <title>k__BackingField: {fileID: 4685380035025289110}
-  <image>k__BackingField: {fileID: 6425068354966528371}
-  <signText>k__BackingField: {fileID: 451157287864980684}
+  <Rect>k__BackingField: {fileID: 7378092237941822061}
+  <Button>k__BackingField: {fileID: 1255375552888963902}
+  <DackgroundDeco>k__BackingField: {fileID: 7810645809682061365}
+  <BackgroundImageRect>k__BackingField: {fileID: 7378092237941822061}
+  <BackgroundImage>k__BackingField: {fileID: 5006314118741009588}
+  <SignBackgroundSprite_Normal>k__BackingField: {fileID: 21300000, guid: 59f2794dd6358ce4391de3c12c7f330a,
+    type: 3}
+  <SignBackgroundSprite_Title>k__BackingField: {fileID: 21300000, guid: dd14e71a597bdae4db7e12440cd6d6ae,
+    type: 3}
+  <Title>k__BackingField: {fileID: 4685380035025289110}
+  <Image>k__BackingField: {fileID: 6425068354966528371}
+  <SignText>k__BackingField: {fileID: 451157287864980684}
 --- !u!114 &5006314118741009588
 MonoBehaviour:
   m_ObjectHideFlags: 0

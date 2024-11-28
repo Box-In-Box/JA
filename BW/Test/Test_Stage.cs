@@ -19,11 +19,6 @@ public class Test_Stage : MonoBehaviour
 
     public Button gotoScene_0;
 
-    public Button myRommOut;
-    public Button myRommIn;
-
-    public UnityEvent myRoomInEvent = new UnityEvent();
-    public UnityEvent myRoomOutEvent = new UnityEvent();
 
     private void Start()
     {
@@ -40,9 +35,5 @@ public class Test_Stage : MonoBehaviour
 
         // 오프라인 씬
         gotoScene_0.onClick.AddListener(() => SceneLoadManager.instance.LoadScene("OffStage_0"));
-
-        // 마이룸
-        myRommOut.onClick.AddListener(() => PhotonNetworkManager.instance.MyRoomOut(myRoomOutEvent));
-        myRommIn.onClick.AddListener(() => PhotonNetworkManager.instance.MyRoomIn(myRoomInEvent));
     }
 }

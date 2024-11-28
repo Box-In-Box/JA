@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 7387444109164144141}
   - component: {fileID: 5521546370090055670}
   - component: {fileID: 4625723694740876292}
+  - component: {fileID: 441993116968508597}
   - component: {fileID: 5807402205352052592}
   m_Layer: 5
   m_Name: LoadingPopup
@@ -289,10 +290,23 @@ MonoBehaviour:
   isRemained: 0
   isDimmed: 0
   isClosedWithDimmed: 0
-  <progressView>k__BackingField: {fileID: 8222448452012319264}
-  <loadingBackgroundImgage>k__BackingField: {fileID: 5521546370090055670}
-  <loadingImgage>k__BackingField: {fileID: 9099359884077914324}
-  <loadingText>k__BackingField: {fileID: 8530098460323178613}
+  <LoadingImage>k__BackingField: {fileID: 441993116968508597}
+  <ProgressView>k__BackingField: {fileID: 8222448452012319264}
+--- !u!114 &441993116968508597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118117254666282467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb03380867bb5a4db25831a0abb3f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <LoadingBackgroundImgage>k__BackingField: {fileID: 5521546370090055670}
+  <LoadingImgage>k__BackingField: {fileID: 9099359884077914324}
+  <LoadingText>k__BackingField: {fileID: 8530098460323178613}
   loadingImageRotateSpeed: 1
 --- !u!225 &5807402205352052592
 CanvasGroup:

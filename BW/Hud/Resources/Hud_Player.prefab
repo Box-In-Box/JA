@@ -80,8 +80,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HudUi>k__BackingField: {fileID: 1665714497372355769}
-  <ChatText>k__BackingField: {fileID: 5445849345379720537}
-  <ChatBubbleTime>k__BackingField: 3
+  chatBubbleRect: {fileID: 8561162438624832125}
+  chatBubbleText: {fileID: 5445849345379720537}
+  chatBubbleTime: 3
+  chatBubbleTimePerTextSize: 0.03
 --- !u!1 &1554284574205256407
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

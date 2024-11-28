@@ -23,23 +23,62 @@ public class SignPopupView : MonoBehaviour
     [field: SerializeField] public Button HomepageButton { get; set; }
     [field: SerializeField] public Button MapButton { get; set; }
 
-    public void SetEnterButton(bool value, Action action = null)
+    public void SetEnterButton(string sceneName)
     {
-        EnterButton.gameObject.SetActive(value);
-        EnterButton.onClick.AddListener(() => action?.Invoke());
-        EnterButton.onClick.AddListener(() => PopupManager.instance.Close<SignPopup>());
+        
+        EnterButton.gameObject.SetActive(sceneName == "" ? false : true);
 
+        if (sceneName != "")
+        {
+            EnterButton.onClick.AddListener(() => SceneLoadManager.instance.LoadScene(sceneName));
+        }
+        EnterButton.onClick.AddListener(() => PopupManager.instance.Close<SignPopup>());
         bool iscontentRect = EnterButton.gameObject.activeSelf || QuizButton.gameObject.activeSelf;
         ContentButtonRect.gameObject.SetActive(iscontentRect);
     }
 
-    public void SetQuizButton(bool value, Action action = null)
+    public void SetQuizButton(bool isMission, Action action = null)
     {
-        QuizButton.gameObject.SetActive(value);
-        QuizButton.onClick.AddListener(() => action?.Invoke());
+        QuizButton.gameObject.SetActive(isMission);
+        if (isMission)
+        {
+            QuizButton.onClick.AddListener(() => action?.Invoke());
+        }
         EnterButton.onClick.AddListener(() => PopupManager.instance.Close<SignPopup>());
-
         bool iscontentRect = EnterButton.gameObject.activeSelf || QuizButton.gameObject.activeSelf;
         ContentButtonRect.gameObject.SetActive(iscontentRect);
+    }
+
+    public void SetYoutubeURL(string url)
+    {
+        YoutubeButton.onClick.RemoveAllListeners();
+        YoutubeButton.interactable = url != "" ? true : false;
+
+        if (url != "")
+        {
+            YoutubeButton.onClick.AddListener(() => Application.OpenURL(url));
+        }
+    }
+
+    public void SetHomepageURL(string url)
+    {
+        HomepageButton.onClick.RemoveAllListeners();
+        HomepageButton.interactable = url != "" ? true : false;
+
+        if (url != "")
+        {
+            HomepageButton.onClick.AddListener(() => Application.OpenURL(url));
+        }
+    }
+
+    public void SetMapURL(string url)
+    {
+        MapButton.onClick.RemoveAllListeners();
+        MapButton.interactable = url != "" ? true : false;
+
+        if (url != "")
+        {
+            MapButton.onClick.AddListener(() => Application.OpenURL(url));
+        }
     }
 }

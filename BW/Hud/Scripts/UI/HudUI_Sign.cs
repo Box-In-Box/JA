@@ -11,7 +11,8 @@ public class HudUI_Sign : HudUI
     private void Start()
     {
         HudTarget.TryGetComponent<WorldSign>(out WorldSign sign);
-        WorldSignView.SettingSign(sign.signSprite, sign.signName);
-        sign.view = WorldSignView;
+        WorldSignView.SettingSign(sign.SignSprite, sign.SignName);
+        sign.View = WorldSignView;
+        sign.View.Button.onClick.AddListener(sign.SignPopup);
     }
 }

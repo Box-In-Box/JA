@@ -21,9 +21,8 @@ public class View_TopPanel : View
     [field : SerializeField] public TMP_Text goldText { get; private set; }
     [field : SerializeField] public TMP_Text cashText { get; private set; }
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
         SettingReturn();
     }
 

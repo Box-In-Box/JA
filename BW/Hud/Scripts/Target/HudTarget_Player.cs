@@ -21,6 +21,6 @@ public class HudTarget_Player : HudTarget
         TryGetComponent<PlayerCharacter>(out PlayerCharacter player);
         Transform head = player.Animator.GetBoneTransform(HumanBodyBones.Head);
         Target = head.GetChild(0);
-        HudUI = GetHudUI();
+        HudUI = CreateHudUI();
     }
 }

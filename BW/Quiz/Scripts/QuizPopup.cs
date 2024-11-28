@@ -11,10 +11,10 @@ public class QuizPopup : Popup
 {
     private QuizView quizView;
     [Title("[ Quiz ]")]
-    [field: SerializeField] public QuizData quizdata { get; set; }
-    [field : SerializeField] public QuizAnswer selectedAnswer { get; set; }
-    [field: SerializeField] public List<Reward> rewardList { get; set; }
-    [field: SerializeField] public bool isMission { get; set; }
+    [field: SerializeField] public QuizData Quizdata { get; set; }
+    [field: SerializeField] public QuizAnswer SelectedAnswer { get; set; }
+    [field: SerializeField] public List<Reward> RewardList { get; set; }
+    [field: SerializeField] public bool IsMission { get; set; }
 
     public override void Awake()
     {
@@ -24,9 +24,9 @@ public class QuizPopup : Popup
 
     public void Quiz(string typeName)
     {
-        quizdata = GetQuizData(typeName);
+        Quizdata = GetQuizData(typeName);
 
-        if (quizdata == null) {
+        if (Quizdata == null) {
             PopupManager.instance.Close(this, true);
             PopupManager.instance.Popup("해당 문제가 없습니다.");
             return;
@@ -34,24 +34,24 @@ public class QuizPopup : Popup
 
         quizView.NotUseImageSetting(); // 임시
 
-        rewardList = new List<Reward>(Reward.GetRewards(quizdata.rewards, RewardUISize.S, quizView.rewardPanel));
+        RewardList = new List<Reward>(Reward.GetRewards(Quizdata.rewards, quizView.RewardPanel));
 
-        quizView.ViewSetting(quizdata);
+        quizView.ViewSetting(Quizdata);
     }
 
     public void MissionQuiz(string typeName)
     {
-        isMission = true;
+        IsMission = true;
         Quiz(typeName);
     }
 
     public void AnswerCheck()
     {
-        if (selectedAnswer == null) {
+        if (SelectedAnswer == null) {
             PopupManager.instance.Popup("정답을 선택 후 확인해주세요.");
         }
         else {
-            if (selectedAnswer.isCorrectAnswer) {
+            if (SelectedAnswer.isCorrectAnswer) {
                 Success();
             }
             else {
@@ -62,10 +62,10 @@ public class QuizPopup : Popup
 
     private void Success()
     {
-        Reward.Receive(rewardList, () => PopupManager.instance.Close(this));
+        Reward.Receive(RewardList, () => PopupManager.instance.Close(this));
 
-        if (isMission) {
-            MissionManager.instance.courseMissionManager.UpdateMissionProgress(quizdata, null);
+        if (IsMission) {
+            MissionManager.instance.courseMissionManager.UpdateMissionProgress(Quizdata, null);
         }
     }
 

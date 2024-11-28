@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,7 +6,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Riding : MonoBehaviour, IPlayPopup
+public class Riding : View, IPlayPopup, IInteractive
 {
     /// <summary>
     /// Photon Object 컴포넌트 추가 필요
@@ -26,8 +27,9 @@ public class Riding : MonoBehaviour, IPlayPopup
     private Animator animator;
     private Animator ridingAnimator;
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         foreach (Transform item in scrollRect.content) {
             Button itemButton = item.GetComponent<Button>();
             itemButton.onClick.AddListener(() => playPopup.OpenOrClose(this));
@@ -39,7 +41,7 @@ public class Riding : MonoBehaviour, IPlayPopup
         openCloseButton.onClick.AddListener(() => playPopup.OpenOrClose(this));
     }
 
-    private IEnumerator Start()
+    public IEnumerator Start()
     {
         yield return new WaitUntil(() => animator = GameManager.instance.playerAnimator);
     }
@@ -56,6 +58,7 @@ public class Riding : MonoBehaviour, IPlayPopup
             if (ridingUpdateCoroutine != null) StopCoroutine(ridingUpdateCoroutine); 
             ridingUpdateCoroutine = StartCoroutine(RidingUpdate()); // Update Riding Animation
             isRunning = true;
+            GameManager.instance.playerController.AddInteractive(this);
         }
         // 다른 라이딩 (제거 후 새 라이딩)
         else if (ridingObject != null && index != ridingIndex) {
@@ -68,6 +71,7 @@ public class Riding : MonoBehaviour, IPlayPopup
         // 같은 라이딩 (제거)
         else if (ridingObject != null && index == ridingIndex) {
             Finish();
+            GameManager.instance.playerController.RemoveInteractive(this);
         }
     }
     
@@ -133,6 +137,19 @@ public class Riding : MonoBehaviour, IPlayPopup
         UnSetRidingAnimation();
         UnSetRidingObject();
         
+        if (ridingUpdateCoroutine != null) StopCoroutine(ridingUpdateCoroutine);
+        isRunning = false;
+    }
+
+    public void AddInteractive(IInteractive interactive) { }
+
+    public void RemoveInteractive(IInteractive interactive) { }
+
+    public void UndoInteractive()
+    {
+        UnSetRidingAnimation();
+        UnSetRidingObject();
+
         if (ridingUpdateCoroutine != null) StopCoroutine(ridingUpdateCoroutine);
         isRunning = false;
     }

@@ -18,7 +18,7 @@ public class HudTarget_Chair : HudTarget
     public override void Setting()
     {
         AutoCreateTarget();
-        HudUI = GetHudUI();
+        HudUI = CreateHudUI();
     }
 
     public void AutoCreateTarget()

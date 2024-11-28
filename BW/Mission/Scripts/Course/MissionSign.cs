@@ -16,7 +16,7 @@ public class MissionSign : MissionSignObserver
     {
         if (MissionManager.instance && DatabaseConnector.instance.memberIDRetrieved)
         {
-            MissionManager.instance.courseMissionManager.missionSignSubject.AddObserver(this);
+            MissionManager.instance.courseMissionManager.MissionSignSubject.AddObserver(this);
         }
     }
 
@@ -24,7 +24,7 @@ public class MissionSign : MissionSignObserver
     {
         if (MissionManager.instance && DatabaseConnector.instance.memberIDRetrieved)
         {
-            MissionManager.instance.courseMissionManager.missionSignSubject.RemoveObserver(this);
+            MissionManager.instance.courseMissionManager.MissionSignSubject.RemoveObserver(this);
         }
     }
 
@@ -32,15 +32,15 @@ public class MissionSign : MissionSignObserver
     {
         if (DatabaseConnector.instance.memberIDRetrieved)
         {
-            yield return new WaitUntil(() => worldSign.view != null);
-            Sign(MissionManager.instance.GetMissionRoutesType(MissionManager.instance.courseMissionManager.currentCourceMission.mission_id));
+            yield return new WaitUntil(() => worldSign.View != null);
+            Sign(MissionManager.instance.GetMissionRoutesType(MissionManager.instance.courseMissionManager.CurrentCourceMission.mission_id));
         }
-        worldSign.view.button.onClick.AddListener(() => SignPopup());
+        worldSign.View.Button.onClick.AddListener(() => SignPopup());
     }
 
     public override void Sign(string typeName)
     {
-        if (worldSign.signName == typeName) // Quiz 표시
+        if (worldSign.SignName == typeName) // Quiz 표시
         {
             QuizSign();
         }
@@ -52,14 +52,14 @@ public class MissionSign : MissionSignObserver
 
     public void NormalSign()
     {
-        worldSign.view.NormalSign();
+        worldSign.View.NormalSign();
         isMission = false;
     }
 
     public void QuizSign()
     {
-        worldSign.view.TitleSign();
-        worldSign.view.title.text = "Quiz";
+        worldSign.View.TitleSign();
+        worldSign.View.Title.text = "Quiz";
         isMission = true;
     }
 
@@ -68,22 +68,20 @@ public class MissionSign : MissionSignObserver
         var popup = PopupManager.instance.Open<SignPopup>();
         var popupView = popup.GetComponent<SignPopupView>();
 
-        if (isMission == true)
-        {
-            popupView.SetQuizButton(true, () => Quiz());
-        }
-        else
-        {
-            popupView.SetQuizButton(false);
-        }
+        popupView.SetQuizButton(isMission, () => Quiz());
     }
 
     public void Quiz()
     {
         if (isMission)
         {
+            PopupManager.instance.Close<SignPopup>(true);
             var quizPopup = PopupManager.instance.Open<QuizPopup>();
-            quizPopup.MissionQuiz(worldSign.signName);
+            quizPopup.MissionQuiz(worldSign.SignName);
+        }
+        else
+        {
+            PopupManager.instance.Close<SignPopup>(false);
         }
     }
 }

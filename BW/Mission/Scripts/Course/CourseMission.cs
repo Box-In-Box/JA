@@ -9,30 +9,44 @@ using Gongju.Web;
 
 public class CourseMission : MissionObserver
 {
+    [Serializable]
+    public struct BackgroundSprite
+    {
+        public Sprite normal; // 선택 전
+        public Sprite selected; // 선택 후
+        public Sprite completed; // 보상
+    }
+
+    [Serializable]
+    public struct TextColor
+    {
+        public Color normal;
+        public Color selected;
+        public Color completed;
+    }
+
     [field : Title("[ Course Mission ]")]
-    [field : SerializeField] public MissionData missionData { get; set; }
-    [field : SerializeField] public MissionPopup missionPopup { get; set; }
-    [SerializeField] private Button button;
+    [field : SerializeField] public MissionData MissionData { get; set; }
+    [field : SerializeField] public MissionPopup MissionPopup { get; set; }
+
+    [field: Title("[ Button ]")]
+    [field: SerializeField] public Button Button { get; set; }
+    [field: SerializeField] public TMP_Text ButtonText { get; set; }
+    [field: SerializeField] public Button Button2 { get; set; }
+    [field: SerializeField] public TMP_Text Button2Text { get; set; }
 
     [Title("[ Background ]")]
+    [SerializeField] private BackgroundSprite backgroundSprite;
     [SerializeField] private Image backgroundImage;
-    [SerializeField] private Sprite backgroundNormalSprite; // 선택 전
-    [SerializeField] private Sprite backgroundSelectedSprite; // 선택 후
-    [SerializeField] private Sprite backgroundCompletedSprite; // 보상
     [SerializeField] private Image maroonImage; // 배경 뒤 밤 이미지
 
     [Title("[ Title ]")]
+    [SerializeField] private TextColor textColor;
     [SerializeField] private TMP_Text titleText;
-    [SerializeField] private Color titleTextNormalColor; // 완료 전
-    [SerializeField] private Color titleTextSelectedColor; // 완료 후
 
     [field: Title("[ Course ]")]
     [field: SerializeField] public Image courseImage { get; set; }
     [SerializeField] private TMP_Text courseText;
-
-
-    [Title("[ Completed ]")]
-    [SerializeField] private RectTransform completedPanel; // 완료 보상 전
 
     [Title("[ Finish ]")]
     [SerializeField] private RectTransform finishPanel; // 완료 보상 후
@@ -60,36 +74,36 @@ public class CourseMission : MissionObserver
     
     private void Start()
     {
-        titleText.text = missionData.mission_title;
-        courseText.text = missionData.mission_sub;
-        rewardList = new List<Reward>(Reward.GetRewards(missionData.rewards, RewardUISize.M, rewardPanel));
+        titleText.text = MissionData.mission_title;
+        courseText.text = MissionData.mission_sub;
+        rewardList = new List<Reward>(Reward.GetRewards(MissionData.rewards, rewardPanel));
 
-        var progressData = MissionManager.instance.GetMissionProgress(missionData.mission_id);
-        string routesType = MissionManager.instance.GetMissionRoutesType(missionData.mission_id);
+        var progressData = MissionManager.instance.GetMissionProgress(MissionData.mission_id);
+        string routesType = MissionManager.instance.GetMissionRoutesType(MissionData.mission_id);
 
         if (progressData != null) {
             if (routesType == "finished")
             { // 완료 (보상 후)
-                Finished(missionData.mission_id);
+                Finished(MissionData.mission_id);
             }
             else {
                 if (routesType == "completed")
                 { // 완료 (보상 전)
-                    Completed(missionData.mission_id);
+                    Completed(MissionData.mission_id);
                 }
-                else if (missionData.mission_id == DatabaseConnector.instance.memberData.current_mission_idx)
+                else if (MissionData.mission_id == DatabaseConnector.instance.memberData.current_mission_idx)
                 { // 미션 중
-                    Selected(missionData.mission_id);
+                    Selected(MissionData.mission_id);
                 }
                 else
                 { // 기본 (진행 전)
-                    Normal(missionData.mission_id);
+                    Normal(MissionData.mission_id);
                 }
             }
         }
         else { // 현재 미션 추가
-            DatabaseConnector.instance.SendMissionProgressData(null, null, missionData.mission_id, 0);
-            Normal(missionData.mission_id);
+            DatabaseConnector.instance.SendMissionProgressData(null, null, MissionData.mission_id, 0);
+            Normal(MissionData.mission_id);
         }
     }
 
@@ -99,16 +113,16 @@ public class CourseMission : MissionObserver
     [Button]
     public override void Normal(int missionId)
     {
-        if (missionData.mission_id == missionId)
+        if (MissionData.mission_id == missionId)
         {
-            backgroundImage.sprite = backgroundNormalSprite;
-            titleText.color = titleTextNormalColor;
+            backgroundImage.sprite = backgroundSprite.normal;
+            titleText.color = textColor.normal;
             finishPanel.gameObject.SetActive(false);
-            completedPanel.gameObject.SetActive(false);
             maroonImage.gameObject.SetActive(false);
 
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.SelectCourseMission(this));
+            ButtonText.text = "시작하기";
+            Button.onClick.RemoveAllListeners();
+            Button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.SelectCourseMission(this));
         }
     }
 
@@ -118,16 +132,16 @@ public class CourseMission : MissionObserver
     [Button]
     public override void Selected(int missionId)
     {
-        if (missionData.mission_id == missionId)
+        if (MissionData.mission_id == missionId)
         {
-            backgroundImage.sprite = backgroundSelectedSprite;
-            titleText.color = titleTextSelectedColor;
+            backgroundImage.sprite = backgroundSprite.selected;
+            titleText.color = textColor.selected;
             finishPanel.gameObject.SetActive(false);
-            completedPanel.gameObject.SetActive(false);
             maroonImage.gameObject.SetActive(true);
 
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.SetNormalCourseMission(this));
+            ButtonText.text = "포기하기";
+            Button.onClick.RemoveAllListeners();
+            Button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.SetNormalCourseMission(this));
         }
     }
     /// <summary>
@@ -136,15 +150,16 @@ public class CourseMission : MissionObserver
     [Button]
     public override void Completed(int missionId)
     {
-        if (missionData.mission_id == missionId)
+        if (MissionData.mission_id == missionId)
         {
             Normal(missionId);
-            backgroundImage.sprite = backgroundCompletedSprite;
-            completedPanel.gameObject.SetActive(true);
+            backgroundImage.sprite = backgroundSprite.completed;
+            titleText.color = textColor.completed;
             finishPanel.gameObject.SetActive(false);
 
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.CompletedCourseMission(this, null));
+            ButtonText.text = "보상받기";
+            Button.onClick.RemoveAllListeners();
+            Button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.CompletedCourseMission(this, null));
         }
     }
 
@@ -154,14 +169,13 @@ public class CourseMission : MissionObserver
     [Button]
     public override void Finished(int missionId)
     {
-        if (missionData.mission_id == missionId)
+        if (MissionData.mission_id == missionId)
         {
             Normal(missionId);
-            completedPanel.gameObject.SetActive(false);
             finishPanel.gameObject.SetActive(true);
 
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.FinishedCourseMission(this));
+            Button.onClick.RemoveAllListeners();
+            Button.onClick.AddListener(() => MissionManager.instance.courseMissionManager.FinishedCourseMission(this));
         }
     }
 }

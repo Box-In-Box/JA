@@ -25,7 +25,7 @@ public class KeyboardController : MonoBehaviour, IController
         // Set Jump Button
         jump.GetComponent<Button>().onClick.AddListener(() => playerInputSystem.JumpAction.Invoke());
         // Set Transform
-        this.gameObject.transform.SetParent(Canvas_Scene.instance.view.controlPanel.rect, false);
+        this.gameObject.transform.SetParent(Canvas_Scene.instance.View.ControlPanel.rect, false);
         // Set KeyboardSetting
         KeyboardSetting();
     }

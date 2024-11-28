@@ -17,6 +17,7 @@ public class HudUI_Player : HudUI
             NickName.GetComponent<TMP_Text>().text = player.NickName;
             player.HudUI_Player = this;
         }
+        ShowHud_NickName(player != GameManager.instance.playerCharacter);
     }
 
     public void ShowHud(bool nickName, bool chatBubble)

@@ -115,7 +115,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: index
-    m_EventTreshold: 30000
+    m_EventTreshold: 39999
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1669348510840117324}
   m_Solo: 0
@@ -1962,7 +1962,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: index
-    m_EventTreshold: 20000
+    m_EventTreshold: 19999
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2606966133073610770}
   m_Solo: 0

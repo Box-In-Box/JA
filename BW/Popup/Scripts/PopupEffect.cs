@@ -19,19 +19,15 @@ public enum PopupEffectType
     RightToLeft,
 }
 
-[RequireComponent(typeof(CanvasGroup))]
-public class PopupEffect : MonoBehaviour
+public class PopupEffect : View
 {
-    private RectTransform rect;
-    private CanvasGroup canvasGroup;
     [Tooltip("이펙트 타입")] public PopupEffectType popupEffectType;
     [Tooltip("체크 시 Close 후 오브젝트 비활성화 (체크 해제 시 Close 후 오브젝트 삭제)")] public bool isRemained = false; // PopupManager 호출 말고 캔버스 할당 시
     private Vector2 originalAnchor;
 
-    public virtual void Awake()
+    public override void Awake()
     {
-        rect = GetComponent<RectTransform>();
-        canvasGroup = GetComponent<CanvasGroup>();
+        base.Awake();
         originalAnchor = rect.anchoredPosition;
     }
     

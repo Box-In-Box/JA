@@ -10,10 +10,16 @@ public class Test_Login : MonoBehaviour
     public TMP_InputField idInput;
     public TMP_InputField passwordInput;
     public Button loginButton;
+    public Button guestButton;
 
     private void Start()
     {
         loginButton.onClick.AddListener(() => Login());
+        guestButton.onClick.AddListener(() =>
+        {
+            GameManager.instance.Guest();
+            SceneLoadManager.instance.LoadScene("Lobby");
+        });
     }
 
     public void Login()
@@ -23,6 +29,8 @@ public class Test_Login : MonoBehaviour
 
         if (id == "" || password == "") return;
 
+        PopupManager.instance.Open<LoadingPopup>();
+
         DatabaseConnector.instance.GetMemberUUID(() => {
             DatabaseConnector.instance.GetMemberData(() => {
                 DatabaseConnector.instance.GetAvartarData(() => LoginSuccess(), (errorCode) => {}); // Avartar Data
@@ -30,7 +38,10 @@ public class Test_Login : MonoBehaviour
                 DatabaseConnector.instance.GetMemberMissionData(() => MissionManager.instance.isMemberMissionData = true, null); // My Mission Progress Data
                 DatabaseConnector.instance.GetQuizData(null, null); // All Quiz Datas
             }, (errorCode) => {});
-        }, (errorCode) => {}, id, password);
+        }, (errorCode) => {
+            PopupManager.instance.Close<LoadingPopup>();
+            PopupManager.instance.Popup("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        }, id, password);
     }
 
     public void LoginSuccess()

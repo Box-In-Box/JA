@@ -7,7 +7,7 @@ public abstract class HudTarget : MonoBehaviour
 {
     [field: Title("[ Target ]")]
     [field: SerializeField] public Transform Target { get; set; }
-    [field: SerializeField] public Vector3 Offset { get; set; }
+    [SerializeField] private Vector3 offset;
 
     [field: Title("[ UI ]")]
     [field: SerializeField, ReadOnly] public HudUI HudUI { get; set; }
@@ -18,11 +18,11 @@ public abstract class HudTarget : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return Target.position + Offset;
+        return Target.position + offset;
     }
 
-    public HudUI GetHudUI()
+    public HudUI CreateHudUI()
     {
-        return Canvas_Scene.instance.view.hudPanel.HudManager.AddHud(this);
+        return Canvas_Scene.instance.View.HudPanel.HudManager.AddHud(this);
     }
 }

@@ -7,21 +7,9 @@ using Sirenix.OdinInspector;
 
 public class View_SidePanel : View
 {
-    [field : Title("[ Option ]")]
-    [field : SerializeField] public GameObject option { get; private set; }
+    [field: Title("[ Left Panel ]")]
+    [field: SerializeField] public View_LeftPanel LeftPanel { get; private set; }
 
-    [field : Title("[ Mission ]")]
-    [field : SerializeField] public GameObject mission { get; private set; }
-
-    [field : Title("[ Teleport ]")]
-    [field : SerializeField] public GameObject teleport { get; private set; }
-
-    [field : Title("[ MyRoom ]")]
-    [field : SerializeField] public GameObject myRoom { get; private set; }
-
-    [field : Title("[ Riding ]")]
-    [field : SerializeField] public GameObject riding { get; private set; }
-    
-    [field : Title("[ Community ]")]
-    [field : SerializeField] public GameObject community { get; private set; }
+    [field: Title("[ Right Panel ]")]
+    [field: SerializeField] public View_RightPanel RightPanel { get; private set; }
 }

@@ -17,7 +17,7 @@ public class Canvas_Scene : Canvas_Control, ICanvasView
             return _instance;
         }
     }
-    [field : SerializeField] public View_Scene view { get; set; }
+    [field : SerializeField] public View_Scene View { get; set; }
 
     public override void Awake()
     {
@@ -27,14 +27,14 @@ public class Canvas_Scene : Canvas_Control, ICanvasView
 
     private void ViewSetting()
     {
-        if (view == null) { // For offline Scene
-            view = this.AddComponent<View_Scene>();
+        if (View == null) { // For offline Scene
+            View = this.AddComponent<View_Scene>();
 
-            view.controlPanel = CreateView<View_ControlPanel>();
-            view.controlPanel.transform.SetSiblingIndex(0);
+            View.ControlPanel = CreateView<View_ControlPanel>();
+            View.ControlPanel.transform.SetSiblingIndex(0);
 
-            view.hudPanel = CreateView<View_HudPanel>();
-            view.hudPanel.transform.SetSiblingIndex(0);
+            View.HudPanel = CreateView<View_HudPanel>();
+            View.HudPanel.transform.SetSiblingIndex(0);
         }
     }
 
@@ -58,8 +58,8 @@ public class Canvas_Scene : Canvas_Control, ICanvasView
         return panelRect;
     }
 
-        public View_Control GetView_Control()
+    public View_Control GetView_Control()
     {
-        return view;
+        return View;
     }
 }

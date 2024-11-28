@@ -5,7 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public class AnimationPlayer : MonoBehaviour, IPlayPopup
+public class AnimationPlayer : View, IPlayPopup
 {
     [field : SerializeField] public string playPopupTitle { get; set; }
     [field : SerializeField] public PlayPopup playPopup { get; set; }
@@ -25,8 +25,9 @@ public class AnimationPlayer : MonoBehaviour, IPlayPopup
     private bool isChangeAnimation = false;
 
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         foreach (Transform item in scrollRect.content) {
             Button itemButton = item.GetComponent<Button>();
             itemButton.onClick.AddListener(() => playPopup.OpenOrClose(this));

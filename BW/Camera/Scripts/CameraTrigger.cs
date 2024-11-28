@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
+using Photon.Realtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
@@ -12,24 +13,39 @@ public class CameraTrigger : MonoBehaviour
     private PlayerCharacter playerCharacter;
     [SerializeField] private CinemachineVirtualCamera cinemachineCamera;
     [SerializeField] private CinemachineDollyCart cinemachineDollyCart;
+    [SerializeField] private GameObject offsetTarget;
+    [SerializeField] private Vector3 offset;
 
     private void Start()
     {
         var transposer = cinemachineCamera.GetCinemachineComponent<CinemachineComposer>();
-        Vector3 offset = Vector3.zero;
+        Vector3 obejctOffset = Vector3.zero;
 
-        if (this.transform.parent.TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
+        if (offsetTarget == null)
         {
-            offset = new Vector3(0, mesh.bounds.size.y / 2, 0);
+            offsetTarget = this.gameObject;
         }
-        else if (this.transform.parent.TryGetComponent<Collider>(out Collider col))
+
+        if (offsetTarget.transform.parent.TryGetComponent<MeshRenderer>(out MeshRenderer mesh))
         {
-            offset = new Vector3(0, col.bounds.size.y / 2, 0);
+            obejctOffset = new Vector3(0, mesh.bounds.size.y / 2, 0);
+        }
+        else if (offsetTarget.transform.parent.TryGetComponent<Collider>(out Collider col))
+        {
+            obejctOffset = new Vector3(0, col.bounds.size.y / 2, 0);
+        }
+        else if (offsetTarget.transform.TryGetComponent<MeshRenderer>(out MeshRenderer mesh2))
+        {
+            obejctOffset = new Vector3(0, mesh2.bounds.size.y / 2, 0);
+        }
+        else if (offsetTarget.transform.TryGetComponent<Collider>(out Collider col2))
+        {
+            obejctOffset = new Vector3(0, col2.bounds.size.y / 2, 0);
         }
 
         if (transposer != null)
         {
-            transposer.m_TrackedObjectOffset = offset;
+            transposer.m_TrackedObjectOffset = obejctOffset + offset;
         }
     }
 
@@ -40,8 +56,10 @@ public class CameraTrigger : MonoBehaviour
 
         other.TryGetComponent<PlayerCharacter>(out PlayerCharacter player);
 
-        if (player == playerCharacter) {
-            if (!cameraController.cameraTriggerList.Contains(this)) {
+        if (player == playerCharacter)
+        {
+            if (!cameraController.cameraTriggerList.Contains(this))
+            {
                 cameraController.cameraTriggerList.Add(this);
             }
             SetDollyCartVirtualCameraRotation();
@@ -55,21 +73,41 @@ public class CameraTrigger : MonoBehaviour
 
         other.TryGetComponent<PlayerCharacter>(out PlayerCharacter player);
 
-        if (player == playerCharacter) {
-            if (cameraController.cameraTriggerList.Contains(this)) {
+        if (player == playerCharacter)
+        {
+            if (cameraController.cameraTriggerList.Contains(this)) 
+            {
                 cameraController.cameraTriggerList.Remove(this);
             }
-            
-            if (cameraController.cameraTriggerList.Count == 0) {
-                SetFreeLookCameraRotation();
-            }
-            else {
-                cameraController.cameraTriggerList[0].SetDollyCartVirtualCameraRotation();
-            }
+            CameraSelect();
         }
     }
 
-#region FreeLook To Virtual
+    private void CameraSelect()
+    {
+        if (cameraController.cameraTriggerList.Count == 0)
+        {
+            SetFreeLookCameraRotation();
+        }
+        else
+        {
+            cameraController.cameraTriggerList[0].SetDollyCartVirtualCameraRotation();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.instance && GameManager.instance.PlayerCameraController && cameraController)
+        {
+            if (cameraController.cameraTriggerList.Contains(this))
+            {
+                cameraController.cameraTriggerList.Remove(this);
+            }
+            CameraSelect();
+        }
+    }
+
+    #region FreeLook To Virtual
     public void SetDollyCartVirtualCameraRotation()
     {
         cinemachineDollyCart.m_Position = FreeLookRotationToVirtual();

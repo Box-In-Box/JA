@@ -3,19 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
+using UnityEngine.InputSystem.HID;
 
 public class HudManager : MonoBehaviour
 {
-    [SerializeField] private View_HudPanel view_hudPanel;
     public List<HudUI> hudList { get; set; } = new List<HudUI>();
-
-    private void Awake()
-    {
-        if (view_hudPanel == null)
-        {
-            view_hudPanel = GetComponent<View_HudPanel>();
-        }
-    }
+    [field: SerializeField, Range(10f, 100f)] public float MaxHudVisible { get; set; } = 30f;
 
     public HudUI AddHud(HudTarget hudTarget)
     {
@@ -23,19 +17,19 @@ public class HudManager : MonoBehaviour
         
         if (hudTarget is HudTarget_Player)
         {
-            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Player"), view_hudPanel.PlayerHudPanel);
+            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Player"), Canvas_Scene.instance.View.HudPanel.transform);
         }
         else if (hudTarget is HudTarget_NPC)
         {
-            hudUi = Instantiate(Resources.Load<HudUI>("Hud_NPC"), view_hudPanel.NPCHudPanel);
+            hudUi = Instantiate(Resources.Load<HudUI>("Hud_NPC"), Canvas_Scene.instance.View.HudPanel.transform);
         }
         else if (hudTarget is HudTarget_Sign)
         {
-            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Sign"), view_hudPanel.SignHudPanel);
+            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Sign"), Canvas_Scene.instance.View.HudPanel.transform);
         }
         else if (hudTarget is HudTarget_Chair)
         {
-            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Chair"), view_hudPanel.ChairHudPanel);
+            hudUi = Instantiate(Resources.Load<HudUI>("Hud_Chair"), Canvas_Scene.instance.View.HudPanel.transform);
         }
         hudUi.HudTarget = hudTarget;
         hudUi.IsActive = true;
@@ -66,11 +60,16 @@ public class HudManager : MonoBehaviour
             {
                 RemoveHud(hud);
                 continue;
-            }  
+            }
+            else if (!hud.HudTarget.gameObject.activeInHierarchy)
+            {
+                if (hud.IsActive) ActiveOff(hud);
+                continue;
+            }
             
             Vector3 screenPos = Camera.main.WorldToScreenPoint(hud.HudTarget.GetPosition());
 
-            if (screenPos.z > 0f)
+            if (screenPos.z > 0f && screenPos.z < MaxHudVisible)
             {
                 float offsetWidth = hud.Rect_Flexible.rect.size.x;
                 float offsetHeight = hud.Rect_Flexible.rect.size.y;
@@ -97,6 +96,37 @@ public class HudManager : MonoBehaviour
             {
                 if (hud.IsActive) ActiveOff(hud);
                 if (hud.Rect_Fixed.gameObject.activeSelf) hud.Rect_Fixed.gameObject.SetActive(false);
+            }
+        }
+        SortByDistanceToCamera();
+    }
+
+    public void SortByDistanceToCamera()
+    {
+        var hudPanel = Canvas_Scene.instance.View.HudPanel;
+        if (hudPanel.transform == null || hudPanel.transform.childCount <= 1) return;
+
+        Transform[] children = new Transform[hudPanel.transform.childCount];
+        for (int i = 0; i < hudPanel.transform.childCount; i++)
+        {
+            children[i] = hudPanel.transform.GetChild(i);
+        }
+
+        Vector3 cameraPos = Camera.main.transform.position;
+
+        hudList.Sort((a, b) =>
+        {
+            float distanceA = Vector3.Distance(cameraPos, a.HudTarget.GetPosition());
+            float distanceB = Vector3.Distance(cameraPos, b.HudTarget.GetPosition());
+            return distanceA.CompareTo(distanceB);
+        });
+
+        for (int i = 0; i < hudList.Count; i++)
+        {
+            Transform hudTransform = children.FirstOrDefault(child => child == hudList[i].transform);
+            if (hudTransform != null)
+            {
+                hudTransform.SetSiblingIndex(children.Length - 1 - i);
             }
         }
     }

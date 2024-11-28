@@ -6,9 +6,12 @@ using UnityEngine;
 
 public class HudUI_NPC : HudUI
 {
-    [field: Title("[ HudUI_NPC ]")]
+    [field: Title("[ Rect ]")]
     [field: SerializeField] public RectTransform NPCName { get; set; }
     [field: SerializeField] public RectTransform ChatBubble { get; set; }
+
+    [field: Title("[ ChatBubbleController ]")]
+    [field: SerializeField] public ChatBubbleController ChatBubbleController { get; set; }
 
     private void Start()
     {

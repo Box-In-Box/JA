@@ -45,6 +45,9 @@ public class Chair : MonoBehaviour
             player.transform.position = this.transform.position;
             player.transform.forward = this.transform.forward;
             controller.enabled = true;
+
+            player.ChangePlayerState(PlayerState.Wait);
+            GameManager.instance.playerAnimator.SetInteger("index", (int)PlayerAnimationIndex.sit);
         }
     }
 }

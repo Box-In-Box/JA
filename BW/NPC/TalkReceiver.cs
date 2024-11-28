@@ -18,14 +18,11 @@ public class TalkReceiver : ChatBubble, ITalkReceiver
     {
         if (TalkNPC.IsAlwaysTalk)
         {
-            ChatText.text = msg;
-            HudUi.IsVisible = true;
+            ChatAlways(msg);
         }
         else
         {
-            ChatBubbleTime = TalkNPC.TalkTime;
-            chatBubbleWait = new WaitForSeconds(ChatBubbleTime);
             Chat(msg);
         }
-    }
+    }   
 }

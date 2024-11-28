@@ -40,31 +40,27 @@ public class PlayerStateRiding : PlayerStateComponent, IPlayerState, IGravity, I
     public void Move()
     {
         // Movement
-        CurrentSpeed = PlayerInput.MoveVal * MaximumSpeed;
-        Vector3 velocity = new Vector3();
+        Vector3 movementDirection = new Vector3(PlayerInput.MoveVector.x, 0f, PlayerInput.MoveVector.y);
 
-        float xSign = Mathf.Sign(PlayerInput.InputVector.x);
-        float ySign = Mathf.Sign(PlayerInput.InputVector.y);
+        CurrentSpeed = PlayerInput.MoveVal * MaximumSpeed;
+        movementDirection = Quaternion.AngleAxis(CameraTransform.rotation.eulerAngles.y, Vector3.up) * movementDirection;
+
+        Vector3 velocity = new Vector3(movementDirection.x * CurrentSpeed, CurrentGravity, movementDirection.z * CurrentSpeed);
+        Controller.Move(velocity * Time.deltaTime);
+
+        if (PlayerInput.IsMoveing)
+        {
+            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, RotationSpeed * Time.deltaTime);
+        }
 
         float moveVal = 0f;
 
-        if (PlayerInput.Inputstate == InputState.Keyboard) {
-            velocity = transform.forward * PlayerInput.InputVector.y * CurrentSpeed;
-        }
-        else if (PlayerInput.Inputstate == InputState.Joystick) {
-            velocity = transform.forward * (PlayerInput.InputVector.y + xSign * ySign * PlayerInput.InputVector.x) * CurrentSpeed;
-        }
-        
-        velocity.y = CurrentGravity;
-        Controller.Move(velocity * Time.deltaTime);
-
         if (PlayerInput.IsMoveing && PlayerInput.InputVector.y != 0) {
             if (PlayerInput.InputVector.y > 0f) {
-                transform.Rotate(0f, PlayerInput.InputVector.x * RotationSpeed * Time.deltaTime, 0f);
                 moveVal = PlayerInput.MoveVal;
             }
             else {
-                transform.Rotate(0f, -PlayerInput.InputVector.x * RotationSpeed * Time.deltaTime, 0f);
                 moveVal = PlayerInput.MoveVal * -1f;
             }
         }
@@ -72,8 +68,9 @@ public class PlayerStateRiding : PlayerStateComponent, IPlayerState, IGravity, I
         // Animation
         Animator.SetFloat("moveVal", moveVal, Animator.GetFloat("moveVal") < MoveAnimation.Walk ? MoveAnimation.ZoroToMoveDamp : MoveAnimation.MoveDamp, Time.deltaTime);
 
-        float angle = Mathf.InverseLerp(-1f, 1f, PlayerInput.InputVector.x);
-        Animator.SetFloat("angleVal", angle, MoveAnimation.MoveDamp, Time.deltaTime);
+        // 기존 핸들 회전 애니메이션
+        //float angle = Mathf.InverseLerp(-1f, 1f, PlayerInput.InputVector.x);
+        //Animator.SetFloat("angleVal", angle, MoveAnimation.MoveDamp, Time.deltaTime);
     }
 
     public void Jump()
@@ -101,7 +98,7 @@ public class PlayerStateRiding : PlayerStateComponent, IPlayerState, IGravity, I
     {
         // === Move ===
         PlayerController.PlayerStatus.MaximumSpeed = 10f;
-        PlayerController.PlayerStatus.RotationSpeed = 100f;
+        PlayerController.PlayerStatus.RotationSpeed = 800f;
 
         // === Jump ===
         PlayerController.PlayerStatus.JumpMaxCount = 1;

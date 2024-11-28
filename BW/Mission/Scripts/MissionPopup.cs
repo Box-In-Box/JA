@@ -33,18 +33,18 @@ public class MissionPopup : Popup
             switch (missionData.mission_type) {
                 case "daily" :
                     var dailyMission = Instantiate(Resources.Load<NormalMission>("Mission"), content[0]);
-                    dailyMission.missionData = missionData;
-                    dailyMission.missionPopup = this;
+                    dailyMission.MissionData = missionData;
+                    dailyMission.MissionPopup = this;
                     break;
                 case "weekly" :
                     var weeklyMission = Instantiate(Resources.Load<NormalMission>("Mission"), content[1]);
-                    weeklyMission.missionData = missionData;
-                    weeklyMission.missionPopup = this;
+                    weeklyMission.MissionData = missionData;
+                    weeklyMission.MissionPopup = this;
                     break;
                 case "course" :
                     var courseMission = Instantiate(Resources.Load<CourseMission>("CourseMission"), content[2]);
-                    courseMission.missionData = missionData;
-                    courseMission.missionPopup = this;
+                    courseMission.MissionData = missionData;
+                    courseMission.MissionPopup = this;
                     break;
                 case "treasure":
                     TreasureMission treasureMission = Array.Find(treasureContent, x => x.missionTitle == missionData.mission_title);

@@ -12,32 +12,27 @@ using Photon.Pun.Demo.Procedural;
 
 public class WorldSign : MonoBehaviour
 {
-    [field: SerializeField, ReadOnly] public WorldSignView view { get; set; }
+    [field: SerializeField, ReadOnly] public WorldSignView View { get; set; }
     [field: SerializeField] public HudTarget HudTarget { get; set; }
-    [field: SerializeField] public Sprite signSprite { get; set; }
-    [field: SerializeField] public string signName { get; set; }
-    [field: SerializeField] public string sceneName { get; set; }
+    [field: SerializeField] public Sprite SignSprite { get; set; }
+    [field: SerializeField] public string SceneName { get; set; }
+    [field: SerializeField] public string SignName { get; set; }
+    [field: SerializeField] public string SignDescription { get; set; }
+    [field: SerializeField] public string YoutubeUrl { get; set; }
+    [field: SerializeField] public string HomepageUrl { get; set; }
+    [field: SerializeField] public string MapUrl { get; set; }
 
-    private void Start()
+    public void SignPopup()
     {
-        view.button.onClick.AddListener(SignPopup);
-    }
+        var signPopup = PopupManager.instance.Open<SignPopup>();
+        var popupView = signPopup.GetComponent<SignPopupView>();
+        popupView.TitleText.text = SignName;
+        popupView.ChatText.text = SignDescription;
 
-    private void SignPopup()
-    {
-        var popup = PopupManager.instance.Open<SignPopup>();
-        var popupView = popup.GetComponent<SignPopupView>();
-        Debug.Log(popupView);
-        popupView.TitleText.text = signName;
-
-        if (sceneName == "")
-        {
-            popupView.SetEnterButton(false);
-        }
-        else
-        {
-            popupView.SetEnterButton(true, () => SceneLoadManager.instance.LoadScene(sceneName));
-        }
+        popupView.SetEnterButton(SceneName);
+        popupView.SetYoutubeURL(YoutubeUrl);
+        popupView.SetHomepageURL(HomepageUrl);
+        popupView.SetMapURL(MapUrl);
     }
 
     private void OnTriggerEnter(Collider other)

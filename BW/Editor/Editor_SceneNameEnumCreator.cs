@@ -39,11 +39,12 @@ public class Editor_SceneNameEnumCreator
         SceneView.RepaintAll();
 		UnityEngine.Debug.Log("Successfully created scene enum file.");
 	}
-
+	/*
 	[InitializeOnLoadMethod]
 	public static void RegisterSceneListChangedCallback()
 	{
 		EditorBuildSettings.sceneListChanged -= CreateEnum;
 		EditorBuildSettings.sceneListChanged += CreateEnum;
 	}
+	*/
 }

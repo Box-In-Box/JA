@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopupOpen : MonoBehaviour
+public class PopupOpen : View
 {
     [SerializeField] private Popup popup;
 

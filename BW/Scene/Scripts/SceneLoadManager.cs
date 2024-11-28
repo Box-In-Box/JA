@@ -164,7 +164,7 @@ public class SceneLoadManager : MonoSingleton<SceneLoadManager>
         OnLoadSceneSetting();
 
         // 씬 변경 팝업
-        var sceneProgress = PopupManager.instance.Open<LoadingPopup>().progressView;
+        var sceneProgress = PopupManager.instance.Open<LoadingPopup>().ProgressView;
         sceneProgress.ShowProgress();
         yield return new WaitForEndOfFrame();
         

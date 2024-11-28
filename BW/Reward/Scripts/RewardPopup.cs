@@ -29,7 +29,7 @@ public class RewardPopup : Popup
     public void SetReward(List<Reward> rewardList)
     {
         foreach (var reward in rewardList) {
-            this.rewardList.Add(new Reward(reward.rewardType, reward.value, RewardUISize.L, rewardPanel));
+            this.rewardList.Add(new Reward(reward.rewardType, reward.value, rewardPanel, true));
         }
         GetReward();
     }

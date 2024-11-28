@@ -39,7 +39,7 @@ public class PlayerStatus
     [field : SerializeField] public float FlySpeed { get; set; } // Fly 스피드
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : PlayerInteractive
 {
     [field : Title("[ Reference ]")]
     [field : SerializeField] public PlayerInputSystem PlayerInputSystem { get; set; }
@@ -76,7 +76,9 @@ public class PlayerController : MonoBehaviour
     public void ChangePlayerState(PlayerState state)
     {
         if (state == PlayerState) return;
-        
+
+        UndoInteractive();
+
         switch (state) {
             case PlayerState.Normal :
                 PlayerStateMachine.SetState<PlayerStateNormal>();

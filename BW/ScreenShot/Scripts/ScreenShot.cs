@@ -8,7 +8,7 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 
-public class ScreenShot : MonoBehaviour
+public class ScreenShot : View
 {
     [SerializeField, ReadOnly] private string folder = "PlayScreenShot";
     [SerializeField, ReadOnly] private string file = "PlayPark";
@@ -21,8 +21,9 @@ public class ScreenShot : MonoBehaviour
     public bool isScreenShot;
     private Tweener swapTweener;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         screenShotButton.onClick.AddListener(() => SettingScreenShot());
 
         screenShotView.returnButton.onClick.AddListener(() => SettingScreenShot());
@@ -87,7 +88,7 @@ public class ScreenShot : MonoBehaviour
         screenShotView.interactionPanel.gameObject.SetActive(value);
         screenShotView.animationSpeedToggle.isOn = true;
         screenShotView.swapToggle.isOn = false;
-        Canvas_Scene.instance.view.SetVisible(!value);
+        Canvas_Scene.instance.View.SetVisible(!value);
         playPopup.Close();
     }
 
@@ -262,7 +263,10 @@ public class ScreenShot : MonoBehaviour
 
     private void SNS()
     {
-
+        Debug.Log("SNS share test");
+        NativeShare shared = new NativeShare()
+            .AddFile(photoTexture, GetFileName());
+        shared.Share();
     }
 
     private string GetFileName()

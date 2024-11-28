@@ -47,7 +47,7 @@ public class MissionManager : MonoSingleton<MissionManager>
                     string routesType = GetMissionRoutesType(mission.mission_id);
                     if (IsCurrentMission(mission.mission_id) && routesType != "completed" && routesType != "finished")
                     { // 현재 미션 중
-                        courseMissionManager.currentCourceMission = mission;
+                        courseMissionManager.CurrentCourceMission = mission;
                         courseMissionManager.CourseSetting();
                     }
                     break;

@@ -17,9 +17,9 @@ public class Reward
     [field : SerializeField] public string rewardType { get; set; }
     [field : SerializeField] public int value { get; set; }
 
-    public Reward(string rewardType, int value, RewardUISize size, Transform parent)
+    public Reward(string rewardType, int value, Transform parent, bool isRewardPopup = false)
     {
-        this.rewardUIItem = GameObject.Instantiate(Resources.Load<GameObject>(rewardType + '_' + size.ToString()), parent);
+        this.rewardUIItem = GameObject.Instantiate(Resources.Load<GameObject>(rewardType + (isRewardPopup ? "_Ex" : "")), parent);
 
         this.rewardType = rewardType;
         this.value = value;
@@ -31,7 +31,7 @@ public class Reward
     /// <summary>
     /// 각 스크립트에서 보상 저장용
     /// </summary>
-    public static List<Reward> GetRewards(string rewardString, RewardUISize size, Transform parent)
+    public static List<Reward> GetRewards(string rewardString, Transform parent)
     {
         // ex) rewardString = exp100/coin100
         List<Reward> rewardList = new List<Reward>();
@@ -39,7 +39,7 @@ public class Reward
         foreach (string reward in rewardString.Split('/')) {
             string rewardType = Regex.Replace(reward, @"\d", "");
             int rewardValue = int.Parse(Regex.Replace(reward, @"\D", ""));
-            rewardList.Add(new Reward(rewardType, rewardValue, size, parent));
+            rewardList.Add(new Reward(rewardType, rewardValue, parent));
         }
         return rewardList;
     }

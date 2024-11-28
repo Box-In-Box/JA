@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IView
 {
+    public void Add(IView view);
+    public void Remove(IView view);
     public void SetVisible(bool value);
-    public void Add(IView component);
-    public void Remove(IView component);
+    public void SetActive(bool value);
 }

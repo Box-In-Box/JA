@@ -45,8 +45,7 @@ public class GameManager : MonoPunCallbacksSingleton<GameManager>
 
         // Get Guest ID
         if (currentScene != "Login") { 
-            RandomGuestID();
-            isGuest = true;
+            Guest();
         }
     }
     
@@ -65,7 +64,7 @@ public class GameManager : MonoPunCallbacksSingleton<GameManager>
     }
 
     // 랜덤 게스트
-    public string RandomGuestID()
+    public string Guest()
     {
         int random = Random.Range(100000000, 999999999);
         int uuid = random;
@@ -73,6 +72,7 @@ public class GameManager : MonoPunCallbacksSingleton<GameManager>
 
         Gongju.Web.DatabaseConnector.instance.memberUUID = uuid;
         Gongju.Web.DatabaseConnector.instance.memberData.nickname = nickname;
+        isGuest = true;
 
         return nickname;
     }

@@ -27,7 +27,6 @@ public class CameraController : MonoBehaviour
             ChangeView(baseCameraView + value);
         }
     }
-    private bool isWorldView = false;
 
     private void Awake()
     {
@@ -131,10 +130,12 @@ public class CameraController : MonoBehaviour
 #region Scene View
     public void SetCameraView()
     {
-        if (GameManager.instance.currentScene == "Stage_Outside" || GameManager.instance.currentScene == "MyRoom") {
+        if (GameManager.instance.currentScene == "Stage_Outside" || GameManager.instance.currentScene == "MyRoom")
+        {
             WorldView();
         }
-        else {
+        else 
+        {
             StageView();
         }
     }
@@ -143,24 +144,16 @@ public class CameraController : MonoBehaviour
     public void WorldView()
     {
         playerCamera?.SetOrbitWorld();
-        if (!isWorldView)
-        {
-            baseCameraView = 3f;
-            ChangeView(baseCameraView + cameraView, 10f);
-        }
-        isWorldView = true;
+        baseCameraView = 3f;
+        ChangeView(baseCameraView + cameraView, 10f);
     }
 
     [ButtonGroup, GUIColor(0f, 1f, 0f)]
     public void StageView()
     {
         playerCamera?.SetOrbitStage();
-        if (isWorldView)
-        {
-            baseCameraView = 1f;
-            ChangeView(baseCameraView + cameraView, 10f);
-        }
-        isWorldView = false;
+        baseCameraView = 1f;
+        ChangeView(baseCameraView + cameraView, 10f);
     }
     #endregion
 }

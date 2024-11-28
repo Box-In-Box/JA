@@ -7,31 +7,37 @@ using UnityEngine;
 public class CourseMissionManager : MonoBehaviour
 {
     [SerializeField] private MissionManager missionManager;
-    [field: SerializeField] public MissionSignSubject missionSignSubject { get; set; }
-    [field: SerializeField] public MissionCourseLine missionCourseLine { get; set; }
-    [field: SerializeField, ReadOnly] public MissionData currentCourceMission { get; set; }
+    [field: SerializeField] public MissionSignSubject MissionSignSubject { get; set; }
+    [field: SerializeField, ReadOnly] public MissionGateway MissionGateway { get; set; }
+    [field: SerializeField, ReadOnly] public MissionCourseLine MissionCourseLine { get; set; }
+    [field: SerializeField, ReadOnly] public MissionData CurrentCourceMission { get; set; }
 
     private void Awake()
     {
-        currentCourceMission = new MissionData();
-        currentCourceMission.mission_id = -1;
+        CurrentCourceMission = new MissionData();
+        CurrentCourceMission.mission_id = -1;
     }
 
     public void CourseSetting()
     {
+        int courrentMissionId = DatabaseConnector.instance.memberData.current_mission_idx;
+
         // Line Renderer
-        missionCourseLine?.CourseLineRenderer(DatabaseConnector.instance.memberData.current_mission_idx);
+        MissionCourseLine?.CourseLineRenderer(courrentMissionId);
+
+        // Line Renderer
+        MissionGateway?.CourseGateWay(courrentMissionId, MissionManager.instance.GetMissionRoutesType(courrentMissionId));
 
         // Quiz Mission Sign
-        bool isMission = DatabaseConnector.instance.memberData.current_mission_idx > 0;
-        missionSignSubject?.Sign(isMission ? missionManager.GetMissionRoutesType(currentCourceMission.mission_id) : "");
+        bool isMission = courrentMissionId > 0;
+        MissionSignSubject?.Sign(isMission ? missionManager.GetMissionRoutesType(CurrentCourceMission.mission_id) : "");
     }
 
     #region Course UI
     public void SelectCourseMission(CourseMission courseMission)
     {
-        string routesType_Current = missionManager.GetMissionRoutesType(currentCourceMission.mission_id);
-        string routesType = missionManager.GetMissionRoutesType(courseMission.missionData.mission_id);
+        string routesType_Current = missionManager.GetMissionRoutesType(CurrentCourceMission.mission_id);
+        string routesType = missionManager.GetMissionRoutesType(courseMission.MissionData.mission_id);
         // Change
         if (routesType_Current != "completed" && routesType_Current != "finished" && routesType != "completed" && routesType != "finished")
         {
@@ -49,10 +55,10 @@ public class CourseMissionManager : MonoBehaviour
     /// </summary>
     public void SetCourseMission(CourseMission courseMission)
     {
-        PopupManager.instance.Popup(courseMission.missionData.mission_title + "을(를) 진행 하시겠습니까?"
-            , () => MissionManager.instance.UpdateCurrentMission(courseMission.missionData.mission_id, () => {
-                missionManager.missionSubject.Selected(courseMission.missionData.mission_id);
-                currentCourceMission = courseMission.missionData;
+        PopupManager.instance.Popup(courseMission.MissionData.mission_title + "을(를) 진행 하시겠습니까?"
+            , () => MissionManager.instance.UpdateCurrentMission(courseMission.MissionData.mission_id, () => {
+                missionManager.missionSubject.Selected(courseMission.MissionData.mission_id);
+                CurrentCourceMission = courseMission.MissionData;
                 CourseSetting();
             })
         );
@@ -63,11 +69,11 @@ public class CourseMissionManager : MonoBehaviour
     /// </summary>
     public void SetNormalCourseMission(CourseMission courseMission)
     {
-        PopupManager.instance.Popup(courseMission.missionData.mission_title + "을(를) 포기 하시겠습니까"
+        PopupManager.instance.Popup(courseMission.MissionData.mission_title + "을(를) 포기 하시겠습니까"
             , () => MissionManager.instance.UpdateCurrentMission(0, () => {
-                missionManager.missionSubject.Normal(courseMission.missionData.mission_id);
-                currentCourceMission = new MissionData();
-                currentCourceMission.mission_id = -1;
+                missionManager.missionSubject.Normal(courseMission.MissionData.mission_id);
+                CurrentCourceMission = new MissionData();
+                CurrentCourceMission.mission_id = -1;
                 CourseSetting();
             })
         );
@@ -75,11 +81,11 @@ public class CourseMissionManager : MonoBehaviour
 
     public void ChangeCourseMission(CourseMission courseMission)
     {
-        PopupManager.instance.Popup(courseMission.missionData.mission_title + "으로 변경 하시겠습니까?\n(미션 진행상태는 저장 됩니다.)"
-            , () => MissionManager.instance.UpdateCurrentMission(courseMission.missionData.mission_id, () => {
-                missionManager.missionSubject.Normal(currentCourceMission.mission_id);
-                missionManager.missionSubject.Selected(courseMission.missionData.mission_id);
-                currentCourceMission = courseMission.missionData;
+        PopupManager.instance.Popup(courseMission.MissionData.mission_title + "으로 변경 하시겠습니까?\n(미션 진행상태는 저장 됩니다.)"
+            , () => MissionManager.instance.UpdateCurrentMission(courseMission.MissionData.mission_id, () => {
+                missionManager.missionSubject.Normal(CurrentCourceMission.mission_id);
+                missionManager.missionSubject.Selected(courseMission.MissionData.mission_id);
+                CurrentCourceMission = courseMission.MissionData;
                 CourseSetting();
             })
         );
@@ -91,12 +97,12 @@ public class CourseMissionManager : MonoBehaviour
     public void CompletedCourseMission(CourseMission courseMission, Action callback)
     {
         Reward.Receive(courseMission.rewardList, () => PopupManager.instance.Close<RewardPopup>());
-        missionManager.missionSubject.Finished(courseMission.missionData.mission_id);
+        missionManager.missionSubject.Finished(courseMission.MissionData.mission_id);
 
         callback += CourseSetting;
         int progress = -1;
 
-        MissionManager.instance.UpdateMissionProgress(courseMission.missionData.mission_id, progress, callback);
+        MissionManager.instance.UpdateMissionProgress(courseMission.MissionData.mission_id, progress, callback);
     }
 
     /// <summary>
@@ -111,13 +117,13 @@ public class CourseMissionManager : MonoBehaviour
     #region Updata Quiz Mission
     public void UpdateMissionProgress(QuizData quizData, Action callback)
     {
-        if (MissionManager.instance.GetMissionRoutesType(currentCourceMission.mission_id) == quizData.quiz_type)
+        if (MissionManager.instance.GetMissionRoutesType(CurrentCourceMission.mission_id) == quizData.quiz_type)
         {
             callback += CourseSetting;
-            var progressData = missionManager.GetMissionProgress(currentCourceMission.mission_id);
+            var progressData = missionManager.GetMissionProgress(CurrentCourceMission.mission_id);
             int progress = ++progressData.missionProgress;
 
-            MissionManager.instance.UpdateMissionProgress(currentCourceMission.mission_id, progress, callback);
+            MissionManager.instance.UpdateMissionProgress(CurrentCourceMission.mission_id, progress, callback);
         }
     }
     #endregion

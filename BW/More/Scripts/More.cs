@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class More : MonoBehaviour
+public class More : View
 {
     [Serializable] private struct MoreSprite
     {
@@ -17,8 +17,9 @@ public class More : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private MoreSprite moreSprite;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         popup_Remained = GetComponent<Popup_Remained>();
         foreach (Transform menu in popup_Remained.popup.transform)
         {

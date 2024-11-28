@@ -8,7 +8,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using Gongju.Web;
 
-public class ChatManager : MonoBehaviour, IChatReceiver
+public class ChatManager : View, IChatReceiver
 {
     [Title("[ Chatting ]")]
     public RectTransform chatting;
@@ -36,8 +36,9 @@ public class ChatManager : MonoBehaviour, IChatReceiver
     private Queue<Chat_Message> msgBuffer = new Queue<Chat_Message>(); // 서버 버퍼 처리용
     private Coroutine chatBufferCoroutine;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         // Alarm
         chatScrollbar.onValueChanged.AddListener((value) => AlarmScroll());
         alarm.gameObject.SetActive(false);

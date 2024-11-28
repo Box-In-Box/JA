@@ -50,7 +50,7 @@ public class TreasureMission : MissionObserver
         if (GameManager.instance.isGuest) return;
 
         descriptiontext.text = missionData.mission_sub;
-        rewardList = new List<Reward>(Reward.GetRewards(missionData.rewards, RewardUISize.M, rewardPanel));
+        rewardList = new List<Reward>(Reward.GetRewards(missionData.rewards, rewardPanel));
 
         var progressData = MissionManager.instance.GetMissionProgress(missionData.mission_id);
         string routesType = MissionManager.instance.GetMissionRoutesType(missionData.mission_id);

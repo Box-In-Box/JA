@@ -6,7 +6,7 @@ using TMPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
-public class PlayPopup : MonoBehaviour
+public class PlayPopup : View
 {
     private IPlayPopup iPlayPopup = null;
     private CanvasGroup canvasGroup;
@@ -22,8 +22,9 @@ public class PlayPopup : MonoBehaviour
     [SerializeField] private Vector2 openPosition;
     [SerializeField, ReadOnly] private Vector2 closePosition;
 
-    public void Awake()
+    public override void Awake()
     {
+        base.Awake();
         canvasGroup = this.GetComponent<CanvasGroup>();
         rectTransform = this.GetComponent<RectTransform>();
 

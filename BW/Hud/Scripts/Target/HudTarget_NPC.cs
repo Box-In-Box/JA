@@ -1,4 +1,3 @@
-using Photon.Realtime;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +38,6 @@ public class HudTarget_NPC : HudTarget
             }
             if (Target == null) Target = this.transform;
         }
-        HudUI = GetHudUI();
+        HudUI = CreateHudUI();
     }
 }

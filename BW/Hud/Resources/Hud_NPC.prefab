@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5914930623460748120}
   - component: {fileID: 2087249241263806358}
   - component: {fileID: 2978227308791877452}
+  - component: {fileID: 2597980998685934638}
   m_Layer: 5
   m_Name: Hud_NPC
   m_TagString: Untagged
@@ -67,6 +68,7 @@ MonoBehaviour:
   <IsVisible>k__BackingField: 0
   <NPCName>k__BackingField: {fileID: 4945310824053937319}
   <ChatBubble>k__BackingField: {fileID: 7553171626785038477}
+  <ChatBubbleController>k__BackingField: {fileID: 2597980998685934638}
 --- !u!114 &2978227308791877452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,8 +82,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HudUi>k__BackingField: {fileID: 2087249241263806358}
-  <ChatText>k__BackingField: {fileID: 5445849345379720537}
-  <ChatBubbleTime>k__BackingField: 3
+  chatBubbleText: {fileID: 5445849345379720537}
+  chatBubbleTime: 3
+  chatBubbleTimePerTextSize: 0.03
+--- !u!114 &2597980998685934638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 431360695210935878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e78564a107a0d1842b22c6eb3f0e9191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1180170930281101824}
+  chatImage: {fileID: 1826235372640586076}
+  tailImage: {fileID: 5973095298250393473}
+  isClickable: 0
 --- !u!1 &1554284574205256407
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -435,6 +454,8 @@ GameObject:
   - component: {fileID: 6286077750356783386}
   - component: {fileID: 1826235372640586076}
   - component: {fileID: 4861723002989427241}
+  - component: {fileID: 1180170930281101824}
+  - component: {fileID: 994513902921622395}
   m_Layer: 5
   m_Name: Chat
   m_TagString: Untagged
@@ -519,6 +540,127 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1180170930281101824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155395539510645923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1826235372640586076}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &994513902921622395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155395539510645923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2597980998685934638}
+          m_TargetAssemblyTypeName: ChatBubbleController, Assembly-CSharp
+          m_MethodName: EnterColor
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2597980998685934638}
+          m_TargetAssemblyTypeName: ChatBubbleController, Assembly-CSharp
+          m_MethodName: PressedColor
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2597980998685934638}
+          m_TargetAssemblyTypeName: ChatBubbleController, Assembly-CSharp
+          m_MethodName: NormalColor
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2597980998685934638}
+          m_TargetAssemblyTypeName: ChatBubbleController, Assembly-CSharp
+          m_MethodName: SelectedColor
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &5755632087632335028
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

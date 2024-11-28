@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Popup_Remained : MonoBehaviour
+public class Popup_Remained : View
 {
     [SerializeField] private Button openCloseButton;
     [field: SerializeField] public PopupEffect popup { get; set; }
