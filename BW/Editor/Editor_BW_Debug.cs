@@ -13,7 +13,7 @@ public class Editor_BW_Debug : OdinEditorWindow
         GetWindow<Editor_BW_Debug>().Show();
     }
 
-    [Title("Popup")]
-    [Button("QuizPopup"), GUIColor(0, 1, 0)] public void QuizPopup() => PopupManager.instance.Open<QuizPopup>().Quiz("무령왕릉");
-    [Button("MyRoomPopup"), GUIColor(0, 1, 0)] public void MyRoomPopup() => PopupManager.instance.Open<MyRoomPopup>();
+    //[Title("Popup")]
+    //[Button("QuizPopup"), GUIColor(0, 1, 0)] public void QuizPopup() => PopupManager.instance.Open<QuizPopup>().Quiz("무령왕릉");
+    //[Button("MyRoomPopup"), GUIColor(0, 1, 0)] public void MyRoomPopup() => PopupManager.instance.Open<MyRoomPopup>();
 }

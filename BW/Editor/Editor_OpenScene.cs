@@ -61,7 +61,7 @@ public class Editor_OpenScene : EditorWindow
 	[MenuItem("Editor/OpenScene/OffStage_0", false, 401)]
 	static void Scene_18() => SceneOpen(18);
 
-	[MenuItem("Editor/OpenScene/OffStage_Archery", false, 402)]
+	[MenuItem("Editor/OpenScene/OffStage_Archery_", false, 402)]
 	static void Scene_19() => SceneOpen(19);
 
 	[MenuItem("Editor/OpenScene/OffStage_GatheringChestnuts", false, 403)]
@@ -70,17 +70,23 @@ public class Editor_OpenScene : EditorWindow
 	[MenuItem("Editor/OpenScene/OffStage_Test", false, 404)]
 	static void Scene_21() => SceneOpen(21);
 
-	[MenuItem("Editor/OpenScene/OffStage_Batting", false, 405)]
+	[MenuItem("Editor/OpenScene/OffStage_Archery", false, 405)]
 	static void Scene_22() => SceneOpen(22);
 
-	[MenuItem("Editor/OpenScene/OffStage_Injeolmi", false, 406)]
+	[MenuItem("Editor/OpenScene/OffStage_Batting", false, 406)]
 	static void Scene_23() => SceneOpen(23);
 
 	[MenuItem("Editor/OpenScene/OffStage_ChestnutFarm", false, 407)]
 	static void Scene_24() => SceneOpen(24);
 
-	[MenuItem("Editor/OpenScene/OffStage_RoastingChestnuts", false, 408)]
+	[MenuItem("Editor/OpenScene/OffStage_Injeolmi", false, 408)]
 	static void Scene_25() => SceneOpen(25);
+
+	[MenuItem("Editor/OpenScene/OffStage_RoastingChestnuts", false, 409)]
+	static void Scene_26() => SceneOpen(26);
+
+	[MenuItem("Editor/OpenScene/OffStage_PickUpChestnut", false, 410)]
+	static void Scene_27() => SceneOpen(27);
 
 	static public void SceneOpen(int SceneIndex)
 	{
