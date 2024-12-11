@@ -5969,6 +5969,12 @@ PrefabInstance:
       objectReference: {fileID: 6350650695343437201}
     - target: {fileID: 8170719177878734348, guid: 1fff4f84111e11d47b3123a04fd903b9,
         type: 3}
+      propertyPath: startData
+      value: 
+      objectReference: {fileID: 11400000, guid: 8bc3c187f9466d149adf2766941721d4,
+        type: 2}
+    - target: {fileID: 8170719177878734348, guid: 1fff4f84111e11d47b3123a04fd903b9,
+        type: 3}
       propertyPath: imgAvartar
       value: 
       objectReference: {fileID: 3885993034025695087}

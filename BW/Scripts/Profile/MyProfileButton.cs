@@ -20,6 +20,6 @@ public class MyProfileButton : View
     public void Click()
     {
         var popup = PopupManager.instance.Open<ProfilePopup>(ProfilePopupPrefab);
-        popup.Setting(DatabaseConnector.instance.memberUUID);
+        popup.Setting(DatabaseConnector.instance.memberUUID, DatabaseConnector.instance.memberData);
     }
 }

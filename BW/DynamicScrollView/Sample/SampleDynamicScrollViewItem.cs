@@ -17,4 +17,9 @@ public class SampleDynamicScrollViewItem : DynamicScrollViewItem<SampleDynamicSc
     {
         textMeshProUGUI.text = data.text;
     }
+
+    public override SampleDynamicScrollViewData GetData()
+    {
+        return null;
+    }
 }

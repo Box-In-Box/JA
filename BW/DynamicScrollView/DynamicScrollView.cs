@@ -21,7 +21,6 @@ public abstract class DynamicScrollView<ScrollViewData, ScrollViewItem> : MonoBe
     public abstract float MinSize { get; set; }
     public abstract float Space { get; set; }
 
-
     private void Awake()
     {
         scrollRect = GetComponent<ScrollRect>();
@@ -30,7 +29,9 @@ public abstract class DynamicScrollView<ScrollViewData, ScrollViewItem> : MonoBe
     public void Init(List<ScrollViewData> datas)
     {
         if (initialized) return;
-            
+
+        if (scrollRect == null) scrollRect = GetComponent<ScrollRect>();
+
         initialized = true;
 
         scrollRect.onValueChanged.AddListener(OnValueChanged);
@@ -222,5 +223,10 @@ public abstract class DynamicScrollView<ScrollViewData, ScrollViewItem> : MonoBe
     void OnValueChanged(Vector2 value)
     {
         UpdateContentsPosition();
+    }
+
+    public List<ScrollViewData> GetDataList()
+    {
+        return dataList;
     }
 }

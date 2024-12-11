@@ -9845,7 +9845,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7364260174613958747}
   - component: {fileID: 7968337309307112746}
-  - component: {fileID: 6149527341398127083}
+  - component: {fileID: 7566057793633157928}
   - component: {fileID: 7867519421246732236}
   - component: {fileID: 680895907554102369}
   - component: {fileID: 1448403871911970625}
@@ -9885,7 +9885,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6971126289250049670}
   m_CullTransparentMesh: 1
---- !u!114 &6149527341398127083
+--- !u!114 &7566057793633157928
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9894,10 +9894,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6971126289250049670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 190697c627652c14d8e60144784714ac, type: 3}
+  m_Script: {fileID: 11500000, guid: bf31d7ea98cd6c34b8a8c3cb1c7fe4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <popupPrefab>k__BackingField: {fileID: 7130640004133322443, guid: 13228c8afcd217f47a17f2f886046ad5,
+  <GuestbookPopupPrefab>k__BackingField: {fileID: 7130640004133322443, guid: 13228c8afcd217f47a17f2f886046ad5,
     type: 3}
 --- !u!114 &7867519421246732236
 MonoBehaviour:

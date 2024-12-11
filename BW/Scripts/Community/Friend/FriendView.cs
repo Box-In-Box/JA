@@ -22,7 +22,11 @@ public class FriendView : MonoBehaviour
     [field: SerializeField] public Button MyRoomButton { get; set; }
     [field: SerializeField] public Button MoreButton { get; set; }
     [field: SerializeField] public Button FollowButton { get; set; }
-    
+
+    [field: Title("[ Dynamic Scroll ]")]
+    [field: SerializeField] public RectTransform Rect { get; set; }
+    [field: SerializeField] public ContentSizeFitter SizeFitter { get; set; }
+
     public void Friend()
     {
         MyRoomButton.gameObject.SetActive(true);
@@ -30,16 +34,17 @@ public class FriendView : MonoBehaviour
         FollowButton.gameObject.SetActive(false);
     }
 
-    public void Search()
+    public void UnFollowedSearch()
     {
         MyRoomButton.gameObject.SetActive(false);
         MoreButton.gameObject.SetActive(false);
         FollowButton.gameObject.SetActive(true);
+        FollowText.text = "ÆÈ·Î¿ì";
     }
 
-    public void SearchRegistered()
+    public void FollowedSearch()
     {
-        Search();
+        UnFollowedSearch();
         FollowText.text = "¾ðÆÈ·Î¿ì";
     }
 }

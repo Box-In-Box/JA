@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ExitGames.Client.Photon.StructWrapping;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Sirenix.OdinInspector;
@@ -12,6 +10,7 @@ public class Prefab_Common
 {
     [field: SerializeField] public GameObject Dimmed { get; private set; }
     [field: SerializeField] public GameObject NoticePopup { get; private set; }
+    [field: SerializeField] public GameObject InputFieldPopup { get; private set; }
     [field: SerializeField] public GameObject QuizPopup { get; private set; }
 }
 
@@ -61,44 +60,6 @@ public class PopupManager : MonoBehaviour
     [field: Title("[ Popup Dic ]")]
     [SerializeField, ReadOnly] private SerializedDictionary<string, Popup> popupDictionary = new SerializedDictionary<string, Popup>();
 
-    /// <summary>
-    /// 알림 팝업 (액션 후 팝업 닫힘)
-    /// </summary> 
-    public NoticePopup Popup(string msg)
-    {
-        return Popup(msg, null, null, "", "");
-    }
-    public NoticePopup Popup(string msg, Action okAction)
-    {
-        return Popup(msg, okAction, null, "", "");
-    }
-    public NoticePopup Popup(string msg, Action okAction, string okText)
-    {
-        return Popup(msg, okAction, null, okText, "");
-    }
-    public NoticePopup Popup(string msg, Action okAction, Action cancelAction)
-    {
-        return Popup(msg, okAction, cancelAction, "", "");
-    }
-    public NoticePopup Popup(string msg, Action okAction, Action cancelAction, string okText, string cancelText)
-    {
-        NoticePopup popup = Open<NoticePopup>(CommonPrefab.NoticePopup);
-
-        if (okAction == null) popup.RemoveCancelButton();
-        else popup.ShowCancelButton();
-
-        okAction += () => Close(popup);
-        cancelAction += () => Close(popup);
-
-        popup.Setting(msg, okAction, cancelAction, okText, cancelText);
-        popup.OpenPopup(); // 팝업 재실행 이펙트 
-        return popup;
-    }
-    public void PopupClose()
-    {
-        Close<NoticePopup>();
-    }
-
     private void Awake()
     {
         if (_instance == null)
@@ -116,6 +77,7 @@ public class PopupManager : MonoBehaviour
         }
     }
 
+    #region Popup
     public T Open<T>(GameObject popupPrefab) where T : Popup
     {
         if (popupPrefab == null) return null;
@@ -152,4 +114,84 @@ public class PopupManager : MonoBehaviour
         
         popupDictionary.Remove(key);
     }
+
+    public T Get<T>() where T : Popup
+    {
+        if (popupDictionary.TryGetValue(typeof(T).ToString(), out Popup value)) return (T)value;
+        return null;
+    }
+    #endregion
+
+    #region NoticePopup
+    public NoticePopup Popup(string msg)
+    {
+        return Popup(msg, null, null, "", "");
+    }
+    public NoticePopup Popup(string msg, Action okAction)
+    {
+        return Popup(msg, okAction, null, "", "");
+    }
+    public NoticePopup Popup(string msg, Action okAction, string okText)
+    {
+        return Popup(msg, okAction, null, okText, "");
+    }
+    public NoticePopup Popup(string msg, Action okAction, Action cancelAction)
+    {
+        return Popup(msg, okAction, cancelAction, "", "");
+    }
+    public NoticePopup Popup(string msg, Action okAction, Action cancelAction, string okText, string cancelText)
+    {
+        NoticePopup popup = Open<NoticePopup>(CommonPrefab.NoticePopup);
+
+        if (okAction == null) popup.RemoveCancelButton();
+        else popup.ShowCancelButton();
+
+        okAction += () => Close(popup);
+        cancelAction += () => Close(popup);
+
+        popup.Setting(msg, okAction, cancelAction, okText, cancelText);
+        popup.OpenPopup(); // 팝업 재실행 이펙트 
+        return popup;
+    }
+
+    public void PopupClose()
+    {
+        Close<NoticePopup>();
+    }
+    #endregion
+
+    #region InputPopup
+    public InputFieldPopup InputPopup(string msg)
+    {
+        return InputPopup(msg, null, null, "", "");
+    }
+    public InputFieldPopup InputPopup(string msg, Action<string> okAction)
+    {
+        return InputPopup(msg, okAction, null, "", "");
+    }
+    public InputFieldPopup InputPopup(string msg, Action<string> okAction, string okText)
+    {
+        return InputPopup(msg, okAction, null, okText, "");
+    }
+    public InputFieldPopup InputPopup(string msg, Action<string> okAction, Action cancelAction)
+    {
+        return InputPopup(msg, okAction, cancelAction, "", "");
+    }
+    public InputFieldPopup InputPopup(string msg, Action<string> okAction, Action cancelAction, string okText, string cancelText)
+    {
+        InputFieldPopup popup = Open<InputFieldPopup>(CommonPrefab.InputFieldPopup);
+
+        okAction += (value) => InputPopupClose(value);
+        cancelAction += () => Close(popup);
+
+        popup.Setting(msg, okAction, cancelAction, okText, cancelText);
+        popup.OpenPopup(); // 팝업 재실행 이펙트 
+        return popup;
+    }
+
+    public void InputPopupClose(string value)
+    {
+        Close<InputFieldPopup>();
+    }
+    #endregion
 }

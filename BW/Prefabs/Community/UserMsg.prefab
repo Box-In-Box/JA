@@ -561,6 +561,7 @@ GameObject:
   - component: {fileID: 7091169363222268}
   - component: {fileID: 1965959341382805937}
   - component: {fileID: 7434830835472320818}
+  - component: {fileID: 4178908652934159509}
   m_Layer: 5
   m_Name: UserMsg
   m_TagString: Untagged
@@ -625,6 +626,7 @@ MonoBehaviour:
     introduce: 
     profile_image: {fileID: 0}
     friends_uuid: 
+  <IsDM>k__BackingField: 0
 --- !u!114 &7091169363222268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +647,8 @@ MonoBehaviour:
   <DefaultSprite>k__BackingField: {fileID: 21300000, guid: 3e3952aa059e5424aa9af9d5bb91da44,
     type: 3}
   <Button>k__BackingField: {fileID: 7434830835472320818}
+  <Rect>k__BackingField: {fileID: 8926390884532967905}
+  <SizeFitter>k__BackingField: {fileID: 4178908652934159509}
 --- !u!114 &1965959341382805937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +723,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4178908652934159509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6659516318812740224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 0
 --- !u!1 &7504287060558948635
 GameObject:
   m_ObjectHideFlags: 0

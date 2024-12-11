@@ -4,28 +4,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class ProfilePopup : Popup
 {
     [field: Title("[ ProfilePopup ]")]
     [field: SerializeField] public ProfilePopupView View { get; set; }
+
+    [field: Title("[ Data ]")]
+    [field: SerializeField, ReadOnly] public int Uuid { get; set; }
+    [field: SerializeField, ReadOnly] public UserDataView Data { get; set; }
     private bool isMine = false;
 
-    public void Setting(int uuid)
+    private void Start()
     {
-        if (GameManager.instance.isGuest) return;
+        View.FollowButton.onClick.AddListener(() => Follow());
+        View.DMButton.onClick.AddListener(() => DM());
+        View.MyRoomButton.onClick.AddListener(() => MyRoom());
+    }
 
-        if (uuid == DatabaseConnector.instance.memberUUID)
-        {
-            isMine = true;
-            SettingView(uuid, DatabaseConnector.instance.memberData);
-        }
-        else
-        {
-            isMine = false;
-            DatabaseConnector.instance.GetMemberData((userData) => SettingView(uuid, userData), null, uuid);
-        }
+    public void Setting(int uuid, UserDataView data)
+    {
+        Uuid = uuid;
+        Data = data;
+
+        isMine = uuid == DatabaseConnector.instance.memberUUID ? true : false;
+
+        SettingView(uuid, data);
     }
 
     private void SettingView(int uuid, UserDataView data)
@@ -45,23 +52,29 @@ public class ProfilePopup : Popup
         }
         else
         {
-            View.FollowButton.onClick.AddListener(() => Follow(uuid));
-            View.DMButton.onClick.AddListener(() => DM(uuid));
+            if (DatabaseConnector.instance.memberData.friends_uuid.Contains(uuid))
+            {
+                View.FollowButton.gameObject.SetActive(false);
+            }
         }
-        View.MyRoomButton.onClick.AddListener(() => MyRoom(uuid));
     }
 
-    private void Follow(int uuid)
+    private void Follow()
+    {
+        var friendPopup = PopupManager.instance.Get<FriendPopup>();
+        DatabaseConnector.instance.SendMemberFriendRequest(() =>
+        {
+            Setting(Uuid, Data);
+            friendPopup?.Setting();
+        }, null, true, Uuid);
+    }
+
+    private void DM()
     {
 
     }
 
-    private void DM(int uuid)
-    {
-
-    }
-
-    private void MyRoom(int uuid)
+    private void MyRoom()
     {
 
     }

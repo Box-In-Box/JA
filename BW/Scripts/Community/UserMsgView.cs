@@ -20,13 +20,7 @@ public class UserMsgView : MonoBehaviour
     [field: Title("[ Buttons ]")]
     [field: SerializeField] public Button Button { get; set; }
 
-    public void DM()
-    {
-
-    }
-
-    public void GuestBook()
-    {
-
-    }
+    [field: Title("[ Dynamic Scroll ]")]
+    [field: SerializeField] public RectTransform Rect { get; set; }
+    [field: SerializeField] public ContentSizeFitter SizeFitter { get; set; }
 }

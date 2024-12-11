@@ -9,6 +9,8 @@ public abstract class DynamicScrollViewItem<ScrollViewData> : MonoBehaviour
     public abstract ContentSizeFitter SizeFitter { get; }
 
     public abstract void OnUpdate(ScrollViewData data);
+    public abstract ScrollViewData GetData();
+
     public float GetSize(bool isVertical) 
     { 
         return isVertical ? Rect.rect.height : Rect.rect.width; 

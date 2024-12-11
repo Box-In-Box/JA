@@ -66,29 +66,38 @@ namespace BW
 #endregion
 
 #region Date
-        public static string GetDateTime(string dateTime, string format = null)
+        public static DateTime GetDateTime(string dateTime, string format = null)
+        {
+            return DateTime.ParseExact(dateTime, format ?? "yyyy-MM-dd_HH:mm:ss", null);
+        }
+
+        public static string GetChatTime(string dateTime, string format = null)
+        {
+            return GetChatTime(GetDateTime(dateTime), format);
+        }
+
+        public static string GetChatTime(DateTime dateTime, string format = null)
         {
             string date = "";
-            DateTime dateformat = DateTime.ParseExact(dateTime, format ?? "yyyy-MM-dd_HH:mm:ss", null);
             DateTime nowTime = DateTime.Now;
 
             DateTime todayStart = DateTime.Today;
             DateTime thisYearStart = new DateTime(nowTime.Year, 1, 1);
 
-            bool isTodayOrLater = dateformat >= todayStart;
-            bool isThisYear = dateformat >= thisYearStart;
+            bool isTodayOrLater = dateTime >= todayStart;
+            bool isThisYear = dateTime >= thisYearStart;
 
             if (isTodayOrLater)
             {
-                date = dateformat.ToString("tt h:mm");
+                date = dateTime.ToString("tt h:mm");
             }
             else if (isThisYear)
             {
-                date = dateformat.ToString("MM월 dd일");
+                date = dateTime.ToString("MM월 dd일");
             }
             else
             {
-                date = dateformat.ToString("yyyy.MM.dd");
+                date = dateTime.ToString("yyyy.MM.dd");
             }
 
             return date;

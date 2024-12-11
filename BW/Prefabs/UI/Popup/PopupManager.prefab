@@ -51,6 +51,8 @@ MonoBehaviour:
       type: 3}
     <NoticePopup>k__BackingField: {fileID: 8412323827323824145, guid: 7d05e2dc83974b245918ed4212ee4511,
       type: 3}
+    <InputFieldPopup>k__BackingField: {fileID: 8412323827323824145, guid: b28c46489c4181c4fadd8c58e7ae19b9,
+      type: 3}
     <QuizPopup>k__BackingField: {fileID: 4889409128075727658, guid: 9f6e6709d7e5abf4ab64085193d6dadc,
       type: 3}
   <RewardPrefab>k__BackingField:
