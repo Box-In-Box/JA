@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 599a04b8035fbda47b62c8f54b83e043
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - <Hud_PlayerPrefab>k__BackingField: {instanceID: 0}
+  - <Hud_NPCPrefab>k__BackingField: {instanceID: 0}
+  - <Hud_SignPrefab>k__BackingField: {instanceID: 0}
+  - <Hud_ChairPrefab>k__BackingField: {instanceID: 0}
+  - <Hud_MinigameTitlePrefab>k__BackingField: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

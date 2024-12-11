@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: a4739a239b9df4b46bc5bf813ec49b81
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - <playerCharacter>k__BackingField: {instanceID: 0}
+  - <playerAvartar>k__BackingField: {instanceID: 0}
+  - <playerController>k__BackingField: {instanceID: 0}
+  - <playerAnimator>k__BackingField: {instanceID: 0}
+  - <PlayerCameraController>k__BackingField: {instanceID: 0}
+  - <PlayerCharacterPrefab>k__BackingField: {fileID: 3825140242623616632, guid: f5ce2bf53c693884685ef88c9eca2ce7,
+      type: 3}
+  - <CameraControllerPrefab>k__BackingField: {fileID: 3549012269867627933, guid: f5fbaed1ffe26304faee79f20f6fdc9f,
+      type: 3}
+  - <JoystickControllerPrefab>k__BackingField: {fileID: 4806485280045459644, guid: 7fd9af6729ae8764f8d3e34f93a4f770,
+      type: 3}
+  - <KeyboardControllerPrefab>k__BackingField: {fileID: 3321007146527063271, guid: 51e17a35bf65b2d45abe2ea8bc9f3a10,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
