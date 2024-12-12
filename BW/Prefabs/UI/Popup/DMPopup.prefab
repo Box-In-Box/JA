@@ -437,7 +437,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4943441206132634414}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.954792
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1092,10 +1092,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4114639008346977616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4886130756061979951
 CanvasRenderer:
@@ -1263,6 +1263,11 @@ MonoBehaviour:
   isClosedWithDimmed: 1
   <View>k__BackingField: {fileID: 6062432702396706605}
   <Data>k__BackingField:
+    profile_image: {fileID: 0}
+    uuid: 0
+    nickname: 
+    msg: 
+  <UserData>k__BackingField:
     level: 0
     experience: 0
     coin: 0
@@ -1289,6 +1294,8 @@ MonoBehaviour:
   <ContentTransform>k__BackingField: {fileID: 3776232946638922157}
   <ChatInputField>k__BackingField: {fileID: 7226793276908634636}
   <SendButton>k__BackingField: {fileID: 8714620013148963146}
+  <AddFriendButton>k__BackingField: {fileID: 0}
+  <ProfileButton>k__BackingField: {fileID: 0}
 --- !u!114 &7741647576599735182
 MonoBehaviour:
   m_ObjectHideFlags: 0

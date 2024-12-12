@@ -11,6 +11,7 @@ public class SignPopupView : MonoBehaviour
 {
     [field: Title("[ Text ]")]
     [field: SerializeField] public TMP_Text TitleText { get; set; }
+    [field: SerializeField] public TMP_Text SubTitleText { get; set; }
     [field: SerializeField] public TMP_Text ChatText { get; set; }
 
     [field: Title("[ Content Buttons ]")]

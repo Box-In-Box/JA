@@ -21,12 +21,28 @@ public class DMListPopup : Popup
         Setting();
     }
 
+    private void OnEnable()
+    {
+        if (CommunityManager.instance)
+        {
+            CommunityManager.instance.DmAction += Receive;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (CommunityManager.instance)
+        {
+            CommunityManager.instance.DmAction -= Receive;
+        }
+    }
+
     public void Start()
     {
         UserMsgScrollView.Init(new List<UserMsgData>());
     }
 
-    private void Setting()
+    public void Setting()
     {
         if (GameManager.instance.isGuest) return;
 
@@ -35,6 +51,8 @@ public class DMListPopup : Popup
 
     private void SettingLastChat(LastChatData data)
     {
+        UserMsgScrollView.ResetData();
+
         foreach (var chatData in data.last_chats)
         {
             LastChat(chatData);
@@ -47,5 +65,13 @@ public class DMListPopup : Popup
         var userData = new UserData(chat.profile_image, chat.friend_uuid, chat.friend_nickname, chat.friend_last_chat);
         var data = new UserMsgData(UserMsgType.DM, userData, BW.Tool.GetDateTime(chat.chat_time));
         UserMsgScrollView.AddData(data, true, true);
+    }
+
+    private void Receive(Community_Message community_Message)
+    {
+        if (community_Message.receiver == DatabaseConnector.instance.memberUUID)
+        {
+            Setting();
+        }
     }
 }

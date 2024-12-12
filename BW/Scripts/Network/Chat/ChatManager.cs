@@ -23,7 +23,7 @@ public class ChatManager : View, IChatReceiver
     public Toggle chattingToggle;
     public TMP_InputField msgInput;
     public Button sendButton;
-    public RectTransform alarm;
+    public Alarm alarm;
     public Action<bool> chattingAction;
     public Action sendAction;
     
@@ -46,7 +46,6 @@ public class ChatManager : View, IChatReceiver
         base.Awake();
         // Alarm
         chatScrollbar.onValueChanged.AddListener((value) => AlarmScroll());
-        alarm.gameObject.SetActive(false);
 
         // Chatting
         chattingAction += ChattingPopup;
@@ -60,15 +59,15 @@ public class ChatManager : View, IChatReceiver
 
     private void OnEnable()
     {
-        if (PhotonNetworkManager.instance) {
-            PhotonNetworkManager.instance.ChatAction += ChatReceive;
+        if (PhotonChatManager.instance) {
+            PhotonChatManager.instance.ChatAction += ChatReceive;
         }
     }
 
     private void OnDisable()
     {
-        if (PhotonNetworkManager.instance) {
-            PhotonNetworkManager.instance.ChatAction -= ChatReceive;
+        if (PhotonChatManager.instance) {
+            PhotonChatManager.instance.ChatAction -= ChatReceive;
         }
     }
 
@@ -181,7 +180,7 @@ public class ChatManager : View, IChatReceiver
 
         if (uuid <= 0 || nickName == "" || msg== "") return;
 
-        PhotonNetworkManager.instance.SendChatMessage(uuid, nickName, msg);
+        PhotonChatManager.instance.SendMessage(PhotonChatCode.Room, uuid, nickName, msg);
 
         msgInput.text = "";
         msgInput.ActivateInputField();
@@ -210,7 +209,7 @@ public class ChatManager : View, IChatReceiver
         }
 
         if (chat_Message.uuid != DatabaseConnector.instance.memberUUID && (!chattingToggle.isOn || !IsScrollBotton())) {
-            Alarm(true);
+            alarm.GoOff(true);
         }
     }
 
@@ -243,7 +242,7 @@ public class ChatManager : View, IChatReceiver
             DOTween.Kill(chatting);
             chatting.DOAnchorPosX(chatting.rect.width, 1f).SetEase(Ease.OutQuart);
             if (IsScrollBotton()) {
-                Alarm(false);
+                alarm.GoOff(false);
             }
         }
         else {
@@ -252,30 +251,11 @@ public class ChatManager : View, IChatReceiver
         }
     }
 
-    // 알람 적용 여부 함수
-    private void Alarm(bool value)
-    {
-        if (value) {
-            if (!alarm.gameObject.activeSelf) {
-                DOTween.Kill(alarm);
-                alarm.localScale = Vector3.zero;
-                alarm.gameObject.SetActive(true);
-                alarm.DOScale(1f, 1f).SetEase(Ease.OutQuart);
-            }
-        }
-        else {
-            if (alarm.gameObject.activeSelf) {
-                DOTween.Kill(alarm);
-                alarm.DOScale(0f, 1f).SetEase(Ease.InQuart).OnComplete(() => alarm.gameObject.SetActive(false));
-            }
-        }
-    }
-
     // 스크롤 아래 시 알람 제거
     private void AlarmScroll()
     {
         if (chattingToggle.isOn && IsScrollBotton()) {
-            Alarm(false);
+            alarm.GoOff(false);
         }
     }
 #endregion

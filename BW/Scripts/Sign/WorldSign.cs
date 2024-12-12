@@ -34,6 +34,7 @@ public class WorldSign : MonoBehaviour
         var signPopup = PopupManager.instance.Open<SignPopup>(SignPopupPrefab);
         var popupView = signPopup.GetComponent<SignPopupView>();
         popupView.TitleText.text = SignName;
+        popupView.SubTitleText.text = SignNameSub;
         popupView.ChatText.text = SignDescription;
 
         popupView.SetEnterButton(SceneName);

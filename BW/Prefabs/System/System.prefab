@@ -52,6 +52,8 @@ MonoBehaviour:
     type: 3}
   <PhotonVoiceManagerPrefab>k__BackingField: {fileID: 4978432450662458719, guid: 8db990217c907b64ea92996312556fcd,
     type: 3}
+  <PhotonChatManagerPrefab>k__BackingField: {fileID: 6839756695121559194, guid: 1cb80c4de6112a34cb51c2fbd0b53e44,
+    type: 3}
   <SceneLoadManagerPrefab>k__BackingField: {fileID: 2741470967184809707, guid: 5cefc634fd69b094397e031d8994b363,
     type: 3}
   <PopupManagerPrefab>k__BackingField: {fileID: 1023872294378365440, guid: 5c9edce0203cd844abb9cb5a13a5b834,

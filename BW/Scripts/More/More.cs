@@ -1,26 +1,33 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class MoreSprite
+{
+    public Sprite onSprite;
+    public Sprite offSprite;
+}
+
 public class More : View
 {
-    [Serializable] private struct MoreSprite
-    {
-        public Sprite onSprite;
-        public Sprite offSprite;
-    }
-
     private Popup_Remained popup_Remained;
 
-    [SerializeField] private Image image;
+    private Image image;
     [SerializeField] private MoreSprite moreSprite;
+
+    [field: Title("[ Alarm ]")]
+    [SerializeField] private Alarm guestbookAlarm;
+    [SerializeField] private Alarm dmAlarm;
 
     public override void Awake()
     {
         base.Awake();
         popup_Remained = GetComponent<Popup_Remained>();
+        image = GetComponent<Image>();
         foreach (Transform menu in popup_Remained.popup.transform)
         {
             if (menu.TryGetComponent<Button>(out Button button))
@@ -35,6 +42,12 @@ public class More : View
         if (popup_Remained != null)
         {
             popup_Remained.popupAction += PopupAction;
+        }
+
+        if (CommunityManager.instance)
+        {
+            CommunityManager.instance.GuestboolButtonAlarm = guestbookAlarm;
+            CommunityManager.instance.DMButtonAlarm = dmAlarm;
         }
     }
 

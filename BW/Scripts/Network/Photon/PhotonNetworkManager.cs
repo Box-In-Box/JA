@@ -9,7 +9,6 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine.Rendering;
 using System.Linq;
-using UnityEditor;
 
 public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, IInRoomCallbacks, IOnEventCallback
 {
@@ -59,14 +58,10 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
     public PhotonChannelData photonChannelData { get; set; } = new PhotonChannelData();
     public  TypedLobby defaultLobby { get; set; } = new TypedLobby("lobby", LobbyType.Default);
 
-    [field : Title("[ Message Info ]")]
-    public Action<Chat_Message> ChatAction { get; set; }
-    public Action<MyRoom_Message> MyRoomAction { get; set; }
-    public Action<Community_Message> CommunityAction { get; set; }
-
     [field : Title("[ Event Action ]")]
     public Action onJoinedLobbyAction { get; set; }
     public Action onJoinedRoomAction { get; set; }
+    public Action onLeftRoomAction { get; set; }
     public Action<EventData> photonOnEventAction { get; set; }
 
     private void Awake()
@@ -335,10 +330,14 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
 
         PhotonNetwork.LeaveRoom();
     }
-#endregion
+
+    public override void OnLeftRoom()
+    {
+        onLeftRoomAction?.Invoke();
+    }
+    #endregion
 
 #region Room, Lobby -> Login
-    // 4. 
     public void Disconnect()
     {
         if (isConnecting || photonState == ClientState.PeerCreated || photonState == ClientState.Disconnected) return;
@@ -471,27 +470,27 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
         }
     }
 #endregion
-
+    
 #region Photon Event
     public void OnEvent(EventData photonEvent) => photonOnEventAction?.Invoke(photonEvent);
 
     public override void OnEnable()
     {
         base.OnEnable();
-        photonOnEventAction += GetChatMessage;
+        //photonOnEventAction += GetChatMessage;
         photonOnEventAction += GetMyRoomMessage;
-        photonOnEventAction += GetCommunityMessage;
+        //photonOnEventAction += GetCommunityMessage;
     }
 
     public override void OnDisable()
     {
         base.OnDisable();
-        photonOnEventAction -= GetChatMessage;
+        //photonOnEventAction -= GetChatMessage;
         photonOnEventAction -= GetMyRoomMessage;
-        photonOnEventAction -= GetCommunityMessage;
+        //photonOnEventAction -= GetCommunityMessage;
     }
 #endregion
-
+    /*
 #region Chat Message
     public void SendChatMessage(int uuid, string nickName, string message)
     {
@@ -516,10 +515,10 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
         chat_Message.nickName = msgHash["nickName"].ToString();
         chat_Message.msg = msgHash["msg"].ToString();
 
-        ChatAction?.Invoke(chat_Message);
+        PhotonChatManager.instance.ChatAction?.Invoke(chat_Message);
     }
 #endregion
-
+    */
 #region MyRoom
     public void SendMyRoomMessage(PhotonMyRoomCode code)
     {
@@ -541,7 +540,7 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
         MyRoom_Message myRoom_Message = new MyRoom_Message();
         myRoom_Message.code = (PhotonMyRoomCode)msgHash["code"];
 
-        MyRoomAction?.Invoke(myRoom_Message);
+        PhotonChatManager.instance.MyRoomAction?.Invoke(myRoom_Message);
     }
 
     public void MyRoomOut(UnityEngine.Events.UnityEvent callback)
@@ -570,14 +569,15 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
         GameManager.instance.PhotonNetworkConnect();
     }
 #endregion
-
+    /*
 #region Community
-    public void SendCommunityMessage(PhotonCommunityCode code, string sender, string receiver)
+    public void SendCommunityMessage(PhotonCommunityCode code, int sender, int receiver, string msg)
     {
         Hashtable eventData = new Hashtable();
         eventData.Add("code", code);
         eventData.Add("sender", sender);
         eventData.Add("receiver", receiver);
+        eventData.Add("msg", msg);
 
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
         PhotonNetwork.NetworkingClient.OpRaiseEvent((byte)PhotonEventCode.Community, eventData, raiseEventOptions, SendOptions.SendReliable);
@@ -590,13 +590,14 @@ public class PhotonNetworkManager : MonoBehaviourPunCallbacks, ILobbyCallbacks, 
         Hashtable msgHash = photonEvent.CustomData as Hashtable;
         Community_Message community_Message = new Community_Message();
         community_Message.code = (PhotonCommunityCode)msgHash["code"];
-        community_Message.sender = msgHash["sender"].ToString();
-        community_Message.receiver = msgHash["receiver"].ToString();
+        community_Message.sender = (int)msgHash["sender"];
+        community_Message.receiver = (int)msgHash["receiver"];
+        community_Message.msg = msgHash["msg"].ToString();
 
-        CommunityAction?.Invoke(community_Message);
+        PhotonChatManager.instance.CommunityAction?.Invoke(community_Message);
     }
 #endregion
-
+    */
 #region Get
     public string GetMyRoomChannel()
     {

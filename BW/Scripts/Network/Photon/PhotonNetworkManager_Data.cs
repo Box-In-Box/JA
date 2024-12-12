@@ -38,6 +38,13 @@ public class PhotonChannelData
     [ReadOnly] public int currentPlayerCount = 0; // 현재 채널 인원
 }
 
+[System.Serializable]
+public class PhotonChatData
+{
+    [ReadOnly] public string publicChannel = "ch_Public"; // 공용 채널 
+    [ReadOnly] public string roomChannel = "ch_Room"; // 포톤 방 채널
+}
+
 public enum ChannelSplit : byte
 {
     Channel,
@@ -59,17 +66,22 @@ public class Chat_Message
 public class MyRoom_Message
 {
     public PhotonMyRoomCode code;
-    public string sender;
-    public string receiver;
 }
 
 [System.Serializable]
 public class Community_Message
 {
     public PhotonCommunityCode code;
-    public string sender;
-    public string receiver;
+    public int sender;
+    public int receiver;
+    public string msg;
 }
+
+public enum PhotonChatCode : byte
+{
+    Public,
+    Room,
+};
 
 /// <summary>
 /// Photon.IOnEventCallback Event Code

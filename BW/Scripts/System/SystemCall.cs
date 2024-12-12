@@ -20,6 +20,7 @@ public class SystemCall : MonoBehaviour
     [field: SerializeField] public GameObject GameManagerPrefab { get; private set; }
     [field: SerializeField] public GameObject PhotonNetworkManagerPrefab { get; private set; }
     [field: SerializeField] public GameObject PhotonVoiceManagerPrefab { get; private set; }
+    [field: SerializeField] public GameObject PhotonChatManagerPrefab { get; private set; }
     [field: SerializeField] public GameObject SceneLoadManagerPrefab { get; private set; }
     [field: SerializeField] public GameObject PopupManagerPrefab { get; private set; }
     [field: SerializeField] public GameObject SoundManagerPrefab { get; private set; }
@@ -39,6 +40,7 @@ public class SystemCall : MonoBehaviour
         Call<GameManager>();
         Call<PhotonNetworkManager>();
         Call<PhotonVoiceManager>();
+        Call<PhotonChatManager>();
         Call<SceneLoadManager>();
         Call<PopupManager>();
         Call<SoundManager>();
@@ -66,6 +68,11 @@ public class SystemCall : MonoBehaviour
         else if (typeof(T) == typeof(PhotonVoiceManager))
         {
             Instantiate(PhotonVoiceManagerPrefab).TryGetComponent(out T instance);
+            return instance;
+        }
+        else if (typeof(T) == typeof(PhotonChatManager))
+        {
+            Instantiate(PhotonChatManagerPrefab).TryGetComponent(out T instance);
             return instance;
         }
         else if (typeof(T) == typeof(SceneLoadManager))

@@ -35,6 +35,8 @@ public class GuestbookPopup : Popup
 
     public void Setting(int uuid, UserDataView data)
     {
+        if (GameManager.instance.isGuest) return;
+
         Uuid = uuid;
         Data = data;
 

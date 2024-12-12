@@ -1,3 +1,4 @@
+using Gongju.Web;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -50,7 +51,6 @@ public class ChatItem : DynamicScrollViewItem<ChatScrollViewData>
     [field: SerializeField, ReadOnly] public ChatScrollViewData Data { get; set; }
     [field: SerializeField, ReadOnly] public ChatScrollViewData PreviousData { get; set; }
 
-
     public Image ProfileImage { get => ChatItemView.ProfileImage; }
     public TMP_Text NickNameText { get => ChatItemView.NickNameText; }
     public TMP_Text MsgText { get => ChatItemView.MsgText; }
@@ -63,6 +63,7 @@ public class ChatItem : DynamicScrollViewItem<ChatScrollViewData>
     private void Awake()
     {
         ChatDynamicScrollView = GetComponentInParent<ChatDynamicScrollView>();
+        ChatItemView.ProfileImage.GetComponent<Button>().onClick.AddListener(() => Profile());
     }
 
     public override ChatScrollViewData GetData()
@@ -156,6 +157,31 @@ public class ChatItem : DynamicScrollViewItem<ChatScrollViewData>
             case ChatPositionType.Tail:
                 ChatItemView.VisibleProfileImage(false);
                 break;
+        }
+    }
+
+    private void Profile()
+    {
+        if (ChatItemView.ChatType != ChatType.ChatOther) return;
+
+        var dmPopup = PopupManager.instance.Get<DMPopup>();
+        var profilePopup = PopupManager.instance.Open<ProfilePopup>(CommunityManager.instance.CommunityPrefab.ProfilePopup);
+        if (dmPopup?.UserData != null)
+        {
+            profilePopup.Setting(dmPopup.Data.uuid, dmPopup.UserData);
+        }
+        else
+        {
+            var data = new UserDataView();
+            data.nickname = dmPopup.Data.nickname;
+            data.introduce = dmPopup.Data.msg;
+            data.profile_image = dmPopup.Data.profile_image;
+            profilePopup.Setting(dmPopup.Data.uuid, data);
+            DatabaseConnector.instance.GetMemberData((value) =>
+            {
+                var profilePopup = PopupManager.instance.Get<ProfilePopup>();
+                if (profilePopup) profilePopup.Setting(dmPopup.Data.uuid, value);
+            }, null, dmPopup.Data.uuid);
         }
     }
 }

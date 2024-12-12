@@ -14,4 +14,6 @@ public class DMPopupView : MonoBehaviour
 
     [field: Title("[ Button ]")]
     [field: SerializeField] public Button SendButton { get; set; }
+    [field: SerializeField] public Button AddFriendButton { get; set; }
+    [field: SerializeField] public Button ProfileButton { get; set; }
 }

@@ -35,6 +35,10 @@ public class CommunityManager : MonoBehaviour
     [field: Title("[ Prefabs ]")]
     [field: SerializeField] public Prefab_Community CommunityPrefab { get; private set; }
 
+    [field: Title("[ Alarm ]")]
+    [field: SerializeField] public Alarm GuestboolButtonAlarm { get; set; }
+    [field: SerializeField] public Alarm DMButtonAlarm { get; set; }
+
     public void Awake()
     {
         if (_instance == null)
@@ -56,7 +60,7 @@ public class CommunityManager : MonoBehaviour
     {
         if (PhotonNetworkManager.instance)
         {
-            PhotonNetworkManager.instance.CommunityAction += CommunityRouter;
+            PhotonChatManager.instance.CommunityAction += CommunityRouter;
         }
     }
 
@@ -64,14 +68,24 @@ public class CommunityManager : MonoBehaviour
     {
         if (PhotonNetworkManager.instance)
         {
-            PhotonNetworkManager.instance.CommunityAction -= CommunityRouter;
+            PhotonChatManager.instance.CommunityAction -= CommunityRouter;
         }
     }
 
     public void CommunityRouter(Community_Message community_Message)
     {
-        if (community_Message.code == PhotonCommunityCode.Profile) ProfileAction?.Invoke(community_Message);
-        if (community_Message.code == PhotonCommunityCode.GuestBook) GuestBookAction?.Invoke(community_Message);
-        if (community_Message.code == PhotonCommunityCode.DM) DmAction?.Invoke(community_Message);
+        if (community_Message.receiver == DatabaseConnector.instance.memberUUID)
+        {
+            if (community_Message.code == PhotonCommunityCode.Profile) ProfileAction?.Invoke(community_Message);
+            if (community_Message.code == PhotonCommunityCode.GuestBook) GuestBookAction?.Invoke(community_Message);
+            if (community_Message.code == PhotonCommunityCode.DM) DmAction?.Invoke(community_Message);
+        }
+    }
+
+    private void Start()
+    {
+        if (GameManager.instance.isGuest) return;
+
+        //DatabaseConnector.instance.GetChattingLast()
     }
 }

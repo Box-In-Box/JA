@@ -27,6 +27,8 @@ public class ProfilePopup : Popup
 
     public void Setting(int uuid, UserDataView data)
     {
+        if (GameManager.instance.isGuest) return;
+
         Uuid = uuid;
         Data = data;
 
@@ -40,7 +42,7 @@ public class ProfilePopup : Popup
         View.NickNameText.text = data.nickname;
         View.ProfileImage.sprite = data.profile_image ?? View.DefaultSprite;
         View.LevelText.text = $"Lv.{data.level}";
-        View.FriendText.text = data.friends_uuid.Length > 99 ? "99+" : data.friends_uuid.Length.ToString();
+        View.FriendText.text = data.friends_uuid != null ? (data.friends_uuid.Length > 99 ? "99+" : data.friends_uuid.Length.ToString()) : "0";
         View.RankText.text = "0";
 
         View.introductionText.text = data.introduce;
@@ -71,11 +73,18 @@ public class ProfilePopup : Popup
 
     private void DM()
     {
+        var data = new UserData(Data.profile_image, Uuid, Data.nickname, "");
+        var DMPopup = PopupManager.instance.Open<DMPopup>(CommunityManager.instance.CommunityPrefab.DMPopup);
+        DMPopup.Setting(data);
 
+        PopupManager.instance.Close<ProfilePopup>(true);
     }
 
     private void MyRoom()
     {
+        PopupManager.instance.Close<FriendPopup>();
+        PopupManager.instance.Close<ProfilePopup>();
 
+        // ∏∂¿Ã∑Î ¿Ãµø
     }
 }

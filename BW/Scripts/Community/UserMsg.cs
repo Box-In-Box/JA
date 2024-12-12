@@ -30,7 +30,6 @@ public class UserData
     }
 }
 
-
 [Serializable]
 public class UserMsgData
 {
@@ -82,10 +81,22 @@ public class UserMsg : DynamicScrollViewItem<UserMsgData>
         switch (Data.userMsgType)
         {
             case UserMsgType.DM:
-                var popup = PopupManager.instance.Open<DMPopup>(CommunityManager.instance.CommunityPrefab.DMPopup);
-                popup.Setting(Data.userData);
+                var dmPopup = PopupManager.instance.Open<DMPopup>(CommunityManager.instance.CommunityPrefab.DMPopup);
+                dmPopup.Setting(Data.userData);
                 break;
             case UserMsgType.Guestbook:
+                var profilePopup = PopupManager.instance.Open<ProfilePopup>(CommunityManager.instance.CommunityPrefab.ProfilePopup);
+
+                var data = new UserDataView();
+                data.nickname = Data.userData.nickname;
+                data.profile_image = Data.userData.profile_image;
+                profilePopup.Setting(Data.userData.uuid, data);
+
+                DatabaseConnector.instance.GetMemberData((value) =>
+                {
+                    var profilePopup = PopupManager.instance.Get<ProfilePopup>();
+                    if (profilePopup) profilePopup.Setting(Data.userData.uuid, value);
+                }, null, Data.userData.uuid);
                 break;
         }
     }

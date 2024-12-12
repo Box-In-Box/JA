@@ -16,13 +16,33 @@ public class DMPopup : Popup
 
     [field: Title("[ Data ]")]
     [field: SerializeField, ReadOnly] public UserData Data { get; set; }
+    [field: SerializeField, ReadOnly] public UserDataView UserData { get; set; }
 
     [field: Title("[ Dynamic Scroll ]")]
     [field: SerializeField] public ChatDynamicScrollView ChatDynamicScrollView { get; set; }
 
+    private void OnEnable()
+    {
+        if (CommunityManager.instance)
+        {
+            CommunityManager.instance.DmAction += Receive;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (CommunityManager.instance)
+        {
+            CommunityManager.instance.DmAction -= Receive;
+        }
+    }
+
     public void Start()
     {
         ChatDynamicScrollView.Init(new List<ChatScrollViewData>());
+
+        View.SendButton.onClick.AddListener(() => Send());
+        View.ChatInputField.onEndEdit.AddListener((value) => EnterChatSend());
     }
 
     public void Setting(UserData data)
@@ -31,9 +51,11 @@ public class DMPopup : Popup
 
         Data = data;
         View.NickNameText.text = data.nickname;
+        UserData = null;
 
         // Get Data
         DatabaseConnector.instance.GetChattingRecord((chatData) => SettingChat(chatData), null, data.uuid);
+        DatabaseConnector.instance.GetMemberData((value) => UserData = value, null, Data.uuid);
     }
 
     private void SettingChat(ChatRecordData chatRecordData)
@@ -83,5 +105,48 @@ public class DMPopup : Popup
     {
         var data = new ChatScrollViewData(ChatType.ChatDate, "", "", dateTime, null);
         ChatDynamicScrollView.AddData(data, true, true);
+    }
+
+    public void Send()
+    {
+        int myUuid = DatabaseConnector.instance.memberUUID;
+        string msg = View.ChatInputField.text.Trim();
+
+        if (myUuid < 0 || Data.uuid < 0 || msg == "") return;
+
+        var chatItem = new ChatRecordItems();
+        chatItem.chat_uuid = Data.uuid;
+        chatItem.chat_time = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
+        chatItem.chat_string = msg;
+
+
+        DatabaseConnector.instance.SendChat(() =>
+        {
+            PhotonChatManager.instance.SendMessage(PhotonCommunityCode.DM, myUuid, Data.uuid, msg);
+            SendChat(chatItem);
+            PopupManager.instance.Get<DMListPopup>()?.Setting();
+        }, null, Data.uuid, msg);
+        
+        View.ChatInputField.text = "";
+        View.ChatInputField.ActivateInputField();
+    }
+
+    public void EnterChatSend()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) Send();
+    }
+
+    private void Receive(Community_Message community_Message)
+    {
+        if (community_Message.receiver == DatabaseConnector.instance.memberUUID && Data.uuid == community_Message.sender)
+        {
+            var chatItem = new ChatRecordItems();
+            chatItem.chat_uuid = Data.uuid;
+            chatItem.chat_time = DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss");
+            chatItem.chat_string = community_Message.msg;
+
+            ReceiveChat(chatItem);
+            PopupManager.instance.Get<DMListPopup>()?.Setting();
+        }
     }
 }

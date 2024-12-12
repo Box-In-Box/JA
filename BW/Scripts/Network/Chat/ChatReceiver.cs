@@ -21,17 +21,17 @@ public class ChatReceiver : ChatBubble, IChatReceiver
 
     private void OnEnable()
     {
-        if (PhotonNetworkManager.instance)
+        if (PhotonChatManager.instance)
         {
-            PhotonNetworkManager.instance.ChatAction += ChatReceive;
+            PhotonChatManager.instance.ChatAction += ChatReceive;
         }
     }
 
     private void OnDisable()
     {
-        if (PhotonNetworkManager.instance)
+        if (PhotonChatManager.instance)
         {
-            PhotonNetworkManager.instance.ChatAction -= ChatReceive;
+            PhotonChatManager.instance.ChatAction -= ChatReceive;
         }
     }
 
